@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Selection | Prime Paints Zambia</title>
+    <meta name="description"
+        content="Find the perfect paint color with our extensive color selection from Prime Paints Zambia.">
+
+    <!-- Meta SEO -->
+    <meta property="og:title" content="Color Selection | Prime Paints Zambia">
+    <meta property="og:description" content="Find the perfect paint color and combinations for your project.">
+    <meta property="og:type" content="website">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .color-option {
+            height: 120px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .color-option:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .color-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .color-brand-selector {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .brand-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-md);
+            background: var(--bg-soft);
+            border: 2px solid transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .brand-btn.active, .brand-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .color-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .selected-color-box {
+            width: 150px;
+            height: 150px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .color-combinations {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .combination-set {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .combo-color {
+            height: 50px;
+        }
+        
+        .combo-label {
+            padding: 0.8rem;
+            background: var(--white);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Transparent Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-paint-roller"></i>
+                    <span>PRIME PAINTS</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-cta">
+                    <a href="cart.html" class="cta-button">Shop Online</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Colors Hero Section -->
+    <section class="hero" id="colors">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="badge">COLOR COLLECTION</div>
+                    <h1>FIND THE PERFECT<br><span>COLOR</span> TO COMPLETELY TRANSFORM ANY ROOM</h1>
+                    <p>Browse our extensive collection of premium colors. Mix and match to create the perfect combination for your space.</p>
+                    <div class="hero-btns">
+                        <a href="#color-palette" class="cta-button">Explore Colors</a>
+                        <a href="contact.html" class="btn-secondary">Request Samples</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=2070"
+                            alt="Prime Paints Color Collection" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Selector -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Select Brand</h2>
+                <p>Choose from our premium paint brands to explore their unique color palettes.</p>
+            </div>
+
+            <div class="color-brand-selector">
+                <button class="brand-btn active">DuraCoat Silk</button>
+                <button class="brand-btn">WeatherTex</button>
+                <button class="brand-btn">WallGuard</button>
+                <button class="brand-btn">DuraCoat Sheen</button>
+                <button class="brand-btn">White</button>
+                <button class="brand-btn">Coconut Ice</button>
+                <button class="brand-btn">Roman Plaster</button>
+                <button class="brand-btn">Coffee Cream</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Palette -->
+    <section id="color-palette">
+        <div class="container">
+            <div class="section-header">
+                <h2>DuraCoat Silk Collection</h2>
+                <p>Our premium silk finish collection with over 200 unique shades.</p>
+            </div>
+
+            <div class="color-picker">
+                <div class="color-option" style="background-color: #FFFFFF;" onclick="selectColor('#FFFFFF', 'Pure White')">
+                    <div class="color-name">Pure White</div>
+                </div>
+                <div class="color-option" style="background-color: #F5F5DC;" onclick="selectColor('#F5F5DC', 'Beige')">
+                    <div class="color-name">Beige</div>
+                </div>
+                <div class="color-option" style="background-color: #FAEBD7;" onclick="selectColor('#FAEBD7', 'Antique White')">
+                    <div class="color-name">Antique White</div>
+                </div>
+                <div class="color-option" style="background-color: #FFEBCD;" onclick="selectColor('#FFEBCD', 'Blanched Almond')">
+                    <div class="color-name">Blanched Almond</div>
+                </div>
+                <div class="color-option" style="background-color: #FFF8DC;" onclick="selectColor('#FFF8DC', 'Cornsilk')">
+                    <div class="color-name">Cornsilk</div>
+                </div>
+                <div class="color-option" style="background-color: #FDF5E6;" onclick="selectColor('#FDF5E6', 'Old Lace')">
+                    <div class="color-name">Old Lace</div>
+                </div>
+                <div class="color-option" style="background-color: #F5DEB3;" onclick="selectColor('#F5DEB3', 'Wheat')">
+                    <div class="color-name">Wheat</div>
+                </div>
+                <div class="color-option" style="background-color: #DEB887;" onclick="selectColor('#DEB887', 'Burly Wood')">
+                    <div class="color-name">Burly Wood</div>
+                </div>
+                <div class="color-option" style="background-color: #D2B48C;" onclick="selectColor('#D2B48C', 'Tan')">
+                    <div class="color-name">Tan</div>
+                </div>
+                <div class="color-option" style="background-color: #BC8F8F;" onclick="selectColor('#BC8F8F', 'Rosy Brown')">
+                    <div class="color-name">Rosy Brown</div>
+                </div>
+                <div class="color-option" style="background-color: #F4A460;" onclick="selectColor('#F4A460', 'Sandy Brown')">
+                    <div class="color-name">Sandy Brown</div>
+                </div>
+                <div class="color-option" style="background-color: #DAA520;" onclick="selectColor('#DAA520', 'Golden Rod')">
+                    <div class="color-name">Golden Rod</div>
+                </div>
+                <div class="color-option" style="background-color: #B8860B;" onclick="selectColor('#B8860B', 'Dark Golden Rod')">
+                    <div class="color-name">Dark Golden Rod</div>
+                </div>
+                <div class="color-option" style="background-color: #CD853F;" onclick="selectColor('#CD853F', 'Peru')">
+                    <div class="color-name">Peru</div>
+                </div>
+                <div class="color-option" style="background-color: #D2691E;" onclick="selectColor('#D2691E', 'Chocolate')">
+                    <div class="color-name">Chocolate</div>
+                </div>
+                <div class="color-option" style="background-color: #8B4513;" onclick="selectColor('#8B4513', 'Saddle Brown')">
+                    <div class="color-name">Saddle Brown</div>
+                </div>
+                <div class="color-option" style="background-color: #A0522D;" onclick="selectColor('#A0522D', 'Sienna')">
+                    <div class="color-name">Sienna</div>
+                </div>
+                <div class="color-option" style="background-color: #800000;" onclick="selectColor('#800000', 'Maroon')">
+                    <div class="color-name">Maroon</div>
+                </div>
+                <div class="color-option" style="background-color: #DC143C;" onclick="selectColor('#DC143C', 'Crimson')">
+                    <div class="color-name">Crimson</div>
+                </div>
+                <div class="color-option" style="background-color: #B22222;" onclick="selectColor('#B22222', 'Fire Brick')">
+                    <div class="color-name">Fire Brick</div>
+                </div>
+                <div class="color-option" style="background-color: #FF0000;" onclick="selectColor('#FF0000', 'Red')">
+                    <div class="color-name">Red</div>
+                </div>
+                <div class="color-option" style="background-color: #FF4500;" onclick="selectColor('#FF4500', 'Orange Red')">
+                    <div class="color-name">Orange Red</div>
+                </div>
+                <div class="color-option" style="background-color: #FF6347;" onclick="selectColor('#FF6347', 'Tomato')">
+                    <div class="color-name">Tomato</div>
+                </div>
+                <div class="color-option" style="background-color: #FF8C00;" onclick="selectColor('#FF8C00', 'Dark Orange')">
+                    <div class="color-name">Dark Orange</div>
+                </div>
+                <div class="color-option" style="background-color: #FFA500;" onclick="selectColor('#FFA500', 'Orange')">
+                    <div class="color-name">Orange</div>
+                </div>
+                <div class="color-option" style="background-color: #FFD700;" onclick="selectColor('#FFD700', 'Gold')">
+                    <div class="color-name">Gold</div>
+                </div>
+                <div class="color-option" style="background-color: #FFFF00;" onclick="selectColor('#FFFF00', 'Yellow')">
+                    <div class="color-name">Yellow</div>
+                </div>
+                <div class="color-option" style="background-color: #FFFFE0;" onclick="selectColor('#FFFFE0', 'Light Yellow')">
+                    <div class="color-name">Light Yellow</div>
+                </div>
+                <div class="color-option" style="background-color: #F0E68C;" onclick="selectColor('#F0E68C', 'Khaki')">
+                    <div class="color-name">Khaki</div>
+                </div>
+                <div class="color-option" style="background-color: #EEE8AA;" onclick="selectColor('#EEE8AA', 'Pale Golden Rod')">
+                    <div class="color-name">Pale Golden Rod</div>
+                </div>
+                <div class="color-option" style="background-color: #9ACD32;" onclick="selectColor('#9ACD32', 'Yellow Green')">
+                    <div class="color-name">Yellow Green</div>
+                </div>
+                <div class="color-option" style="background-color: #90EE90;" onclick="selectColor('#90EE90', 'Light Green')">
+                    <div class="color-name">Light Green</div>
+                </div>
+                <div class="color-option" style="background-color: #32CD32;" onclick="selectColor('#32CD32', 'Lime Green')">
+                    <div class="color-name">Lime Green</div>
+                </div>
+                <div class="color-option" style="background-color: #00FF00;" onclick="selectColor('#00FF00', 'Lime')">
+                    <div class="color-name">Lime</div>
+                </div>
+                <div class="color-option" style="background-color: #228B22;" onclick="selectColor('#228B22', 'Forest Green')">
+                    <div class="color-name">Forest Green</div>
+                </div>
+                <div class="color-option" style="background-color: #006400;" onclick="selectColor('#006400', 'Dark Green')">
+                    <div class="color-name">Dark Green</div>
+                </div>
+                <div class="color-option" style="background-color: #008080;" onclick="selectColor('#008080', 'Teal')">
+                    <div class="color-name">Teal</div>
+                </div>
+                <div class="color-option" style="background-color: #008B8B;" onclick="selectColor('#008B8B', 'Dark Cyan')">
+                    <div class="color-name">Dark Cyan</div>
+                </div>
+                <div class="color-option" style="background-color: #00BFFF;" onclick="selectColor('#00BFFF', 'Deep Sky Blue')">
+                    <div class="color-name">Deep Sky Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #87CEEB;" onclick="selectColor('#87CEEB', 'Sky Blue')">
+                    <div class="color-name">Sky Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #87CEFA;" onclick="selectColor('#87CEFA', 'Light Sky Blue')">
+                    <div class="color-name">Light Sky Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #4682B4;" onclick="selectColor('#4682B4', 'Steel Blue')">
+                    <div class="color-name">Steel Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #4169E1;" onclick="selectColor('#4169E1', 'Royal Blue')">
+                    <div class="color-name">Royal Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #0000FF;" onclick="selectColor('#0000FF', 'Blue')">
+                    <div class="color-name">Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #00008B;" onclick="selectColor('#00008B', 'Dark Blue')">
+                    <div class="color-name">Dark Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #191970;" onclick="selectColor('#191970', 'Midnight Blue')">
+                    <div class="color-name">Midnight Blue</div>
+                </div>
+                <div class="color-option" style="background-color: #8A2BE2;" onclick="selectColor('#8A2BE2', 'Blue Violet')">
+                    <div class="color-name">Blue Violet</div>
+                </div>
+                <div class="color-option" style="background-color: #9400D3;" onclick="selectColor('#9400D3', 'Violet')">
+                    <div class="color-name">Violet</div>
+                </div>
+                <div class="color-option" style="background-color: #8B008B;" onclick="selectColor('#8B008B', 'Dark Magenta')">
+                    <div class="color-name">Dark Magenta</div>
+                </div>
+                <div class="color-option" style="background-color: #DA70D6;" onclick="selectColor('#DA70D6', 'Orchid')">
+                    <div class="color-name">Orchid</div>
+                </div>
+                <div class="color-option" style="background-color: #FF69B4;" onclick="selectColor('#FF69B4', 'Hot Pink')">
+                    <div class="color-name">Hot Pink</div>
+                </div>
+                <div class="color-option" style="background-color: #FF1493;" onclick="selectColor('#FF1493', 'Deep Pink')">
+                    <div class="color-name">Deep Pink</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Color Preview -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Your Selected Color</h2>
+                <p>Preview your chosen color and see complementary options.</p>
+            </div>
+
+            <div class="color-preview">
+                <div class="selected-color-box" id="selectedColorBox" style="background-color: #D9232D;"></div>
+                <div style="text-align: center;">
+                    <h3 id="selectedColorName" style="margin-bottom: 1rem;">Classic Red</h3>
+                    <p id="selectedColorCode">#D9232D</p>
+                    <button class="cta-button" style="margin-top: 1rem;" onclick="requestSample()">Request Sample</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Combinations -->
+    <section id="combinations">
+        <div class="container">
+            <div class="section-header">
+                <h2>Popular Color Combinations</h2>
+                <p>Try these professionally curated color combinations for your rooms.</p>
+            </div>
+
+            <div class="color-combinations">
+                <div class="combination-set">
+                    <div class="combo-color" style="background: #F5F5DC;"></div>
+                    <div class="combo-color" style="background: #D2B48C;"></div>
+                    <div class="combo-color" style="background: #8B4513;"></div>
+                    <div class="combo-label">Warm Neutrals</div>
+                </div>
+                
+                <div class="combination-set">
+                    <div class="combo-color" style="background: #E6E6FA;"></div>
+                    <div class="combo-color" style="background: #DDA0DD;"></div>
+                    <div class="combo-color" style="background: #BA55D3;"></div>
+                    <div class="combo-label">Soft Pastels</div>
+                </div>
+                
+                <div class="combination-set">
+                    <div class="combo-color" style="background: #7FFFD4;"></div>
+                    <div class="combo-color" style="background: #20B2AA;"></div>
+                    <div class="combo-color" style="background: #4682B4;"></div>
+                    <div class="combo-label">Ocean Breeze</div>
+                </div>
+                
+                <div class="combination-set">
+                    <div class="combo-color" style="background: #F0E68C;"></div>
+                    <div class="combo-color" style="background: #FFD700;"></div>
+                    <div class="combo-color" style="background: #FF8C00;"></div>
+                    <div class="combo-label">Sunset Glow</div>
+                </div>
+                
+                <div class="combination-set">
+                    <div class="combo-color" style="background: #D8BFD8;"></div>
+                    <div class="combo-color" style="background: #9370DB;"></div>
+                    <div class="combo-color" style="background: #4169E1;"></div>
+                    <div class="combo-label">Lavender Dreams</div>
+                </div>
+                
+                <div class="combination-set">
+                    <div class="combo-color" style="background: #90EE90;"></div>
+                    <div class="combo-color" style="background: #32CD32;"></div>
+                    <div class="combo-color" style="background: #228B22;"></div>
+                    <div class="combo-label">Fresh Greens</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Tools -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Color Tools & Resources</h2>
+                <p>Helpful tools to make your color selection easier.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Color Visualizer</h3>
+                    <p>Upload a photo of your room and visualize how different colors will look in your space.</p>
+                    <a href="#" class="btn-text">Try Tool <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Color Guide</h3>
+                    <p>Download our comprehensive color guide with tips on choosing the perfect shade for any room.</p>
+                    <a href="#" class="btn-text">Download Guide <i class="fas fa-download"></i></a>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <h3>Room Calculator</h3>
+                    <p>Calculate how much paint you need for your project based on room dimensions.</p>
+                    <a href="calculator.html" class="btn-text">Use Calculator <i class="fas fa-calculator"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Consultation -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2>Professional Color Consultation</h2>
+                <p>Our color experts can help you choose the perfect palette for your project.</p>
+            </div>
+
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h3 style="font-size: 2.5rem; margin-bottom: 2rem;">Unleash Your Inner Painting Pro</h3>
+                    <p>Confused about which paint colors to use for your upcoming project? Let our expert consultants guide you. At Prime Paints, we offer personalized consultancy services to help you choose the right colors based on your specific needs and preferences.</p>
+                    <ul style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Personal color consultations</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Room-specific recommendations</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Lighting analysis</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Trend forecasting</li>
+                    </ul>
+                    <div class="hero-btns" style="margin-top: 2rem;">
+                        <a href="contact.html" class="cta-button">Book Consultation</a>
+                        <a href="services.html" class="btn-secondary">Learn More</a>
+                    </div>
+                </div>
+                <div class="hero-visual reveal">
+                    <div class="hero-image-wrapper" style="aspect-ratio: 1/1;">
+                        <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=2070"
+                            alt="Color Consultation" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h2 style="color: white;">Ready to Transform Your Space?</h2>
+                    <p>Visit one of our stores to see our colors in person, or order samples online. Our color experts are ready to help you find the perfect shade.</p>
+                    <div class="hero-btns">
+                        <a href="products.html" class="cta-button" style="background: var(--white); color: var(--primary);">Shop Colors</a>
+                        <a href="contact.html" class="btn-secondary" style="border-color: white; color: white;">Find Store</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=2070"
+                            alt="Color Collection" class="hero-image" style="filter: brightness(1.1);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer style="background: var(--secondary); color: var(--white); padding: 80px 0 40px;">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 50px; margin-bottom: 40px;">
+                <div>
+                    <a href="index.html" class="logo" style="color: var(--white); margin-bottom: 1.5rem;">
+                        <i class="fas fa-paint-roller"></i>
+                        <span>PRIME PAINTS</span>
+                    </a>
+                    <p style="color: rgba(255,255,255,0.6); max-width: 300px;">Redefining the art of color for everyday
+                        life. Zambia's choice for premium decorative and industrial coatings.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="solutions.html">Solutions</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Solutions</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li>Decorative</li>
+                        <li>Industrial</li>
+                        <li>Automotive</li>
+                        <li>Waterproofing</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
+                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Footer Scripts -->
+    <script src="main.js"></script>
+    <script>
+        // Color selection functionality
+        function selectColor(color, name) {
+            document.getElementById('selectedColorBox').style.backgroundColor = color;
+            document.getElementById('selectedColorName').textContent = name;
+            document.getElementById('selectedColorCode').textContent = color;
+        }
+
+        // Brand selector functionality
+        document.querySelectorAll('.brand-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.brand-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // In a real implementation, you would load the color palette for the selected brand
+                console.log('Selected brand:', this.textContent);
+            });
+        });
+
+        // Request sample functionality
+        function requestSample() {
+            const colorName = document.getElementById('selectedColorName').textContent;
+            alert(`Sample request for "${colorName}" has been submitted. We'll contact you shortly to arrange delivery.`);
+        }
+    </script>
+</body>
+
+</html>

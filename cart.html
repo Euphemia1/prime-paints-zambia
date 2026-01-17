@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | Prime Paints Zambia</title>
+    <meta name="description"
+        content="Your shopping cart for Prime Paints Zambia products. Review your items and proceed to checkout.">
+
+    <!-- Meta SEO -->
+    <meta property="og:title" content="Shopping Cart | Prime Paints Zambia">
+    <meta property="og:description" content="Review your selected paint products and complete your purchase.">
+    <meta property="og:type" content="website">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .cart-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2.5rem;
+        }
+        
+        .cart-header {
+            display: grid;
+            grid-template-columns: 3fr 1fr 1fr 1fr;
+            padding: 1.5rem 0;
+            border-bottom: 2px solid #eee;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 3fr 1fr 1fr 1fr;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        
+        .item-details {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-info h3 {
+            margin-bottom: 0.3rem;
+        }
+        
+        .item-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 0.3rem;
+            border-radius: var(--radius-sm);
+        }
+        
+        .item-price, .item-total {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .remove-item {
+            color: #ff4757;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .cart-summary {
+            background: var(--bg-soft);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--primary);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .empty-cart i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Transparent Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-paint-roller"></i>
+                    <span>PRIME PAINTS</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-cta">
+                    <a href="cart.html" class="cta-button">Shop Online</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Cart Hero Section -->
+    <section class="hero" id="cart">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="badge">SHOPPING CART</div>
+                    <h1>REVIEW YOUR<br><span>SELECTION</span></h1>
+                    <p>Review your selected paint products and proceed to secure checkout.</p>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1581578021424-ebdc0b4a0a88?auto=format&fit=crop&q=80&w=2070"
+                            alt="Shopping Cart" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Content -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="cart-container">
+                <div>
+                    <div class="cart-header">
+                        <div>Product</div>
+                        <div>Price</div>
+                        <div>Quantity</div>
+                        <div>Total</div>
+                    </div>
+
+                    <!-- Cart Items -->
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-image">
+                                <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=200" alt="Prime Super Gloss">
+                            </div>
+                            <div class="item-info">
+                                <h3>Prime Super Gloss</h3>
+                                <p>4L Container - White</p>
+                            </div>
+                        </div>
+                        <div class="item-price">K450.00</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" aria-label="Decrease quantity">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" aria-label="Quantity">
+                            <button class="quantity-btn" aria-label="Increase quantity">+</button>
+                        </div>
+                        <div class="item-total">K450.00</div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-image">
+                                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=200" alt="Velvet Matt Emulsion">
+                            </div>
+                            <div class="item-info">
+                                <h3>Velvet Matt Emulsion</h3>
+                                <p>4L Container - Beige</p>
+                            </div>
+                        </div>
+                        <div class="item-price">K380.00</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" aria-label="Decrease quantity">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" aria-label="Quantity">
+                            <button class="quantity-btn" aria-label="Increase quantity">+</button>
+                        </div>
+                        <div class="item-total">K380.00</div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <div class="item-image">
+                                <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=200" alt="WallCoat Plaster Primer">
+                            </div>
+                            <div class="item-info">
+                                <h3>WallCoat Plaster Primer</h3>
+                                <p>2L Container - White</p>
+                            </div>
+                        </div>
+                        <div class="item-price">K350.00</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" aria-label="Decrease quantity">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" aria-label="Quantity">
+                            <button class="quantity-btn" aria-label="Increase quantity">+</button>
+                        </div>
+                        <div class="item-total">K350.00</div>
+                    </div>
+
+                    <!-- Cart Actions -->
+                    <div style="display: flex; justify-content: space-between; margin-top: 2rem;">
+                        <a href="products.html" class="btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Continue Shopping
+                        </a>
+                        <button class="cta-button">
+                            <i class="fas fa-sync-alt"></i> Update Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cart Summary -->
+                <div>
+                    <div class="cart-summary">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Order Summary</h3>
+                        
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>K1,180.00</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Delivery Fee</span>
+                            <span>K100.00</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Tax (16%)</span>
+                            <span>K188.80</span>
+                        </div>
+                        
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span>K1,468.80</span>
+                        </div>
+                        
+                        <div style="margin-top: 2rem;">
+                            <a href="payment.html" class="cta-button" style="width: 100%; text-align: center; display: block; padding: 1.2rem;">
+                                Proceed to Checkout
+                            </a>
+                            
+                            <div style="margin-top: 1.5rem; text-align: center;">
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                    <i class="fas fa-lock"></i> Secure checkout with SSL encryption
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Promo Code -->
+                        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #ddd;">
+                            <h4 style="margin-bottom: 1rem;">Promo Code</h4>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" placeholder="Enter promo code" style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: var(--radius-sm);">
+                                <button style="padding: 0.8rem 1.2rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer;">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section id="related-products">
+        <div class="container">
+            <div class="section-header">
+                <h2>You Might Also Like</h2>
+                <p>Complete your painting project with these recommended products.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="product-card reveal">
+                    <div class="product-img">
+                        <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=600" alt="DuraCoat Silk">
+                    </div>
+                    <div class="product-info">
+                        <h3>DuraCoat Silk</h3>
+                        <p>Luxurious silk finish with excellent hide and washability.</p>
+                        <span class="price">From K450.00</span>
+                        <a href="#" class="btn-text">Add to Cart <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+
+                <div class="product-card reveal">
+                    <div class="product-img">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=600" alt="DuraCoat WeatherTex">
+                    </div>
+                    <div class="product-info">
+                        <h3>DuraCoat WeatherTex</h3>
+                        <p>Exterior grade weather-resistant coating. UV stable and long-lasting.</p>
+                        <span class="price">From K520.00</span>
+                        <a href="#" class="btn-text">Add to Cart <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+
+                <div class="product-card reveal">
+                    <div class="product-img">
+                        <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=600" alt="DuraCoat Ceiling Paint">
+                    </div>
+                    <div class="product-info">
+                        <h3>Dura Coat Ceiling Paint</h3>
+                        <p>Specially formulated for ceiling applications. Non-drip formula.</p>
+                        <span class="price">From K320.00</span>
+                        <a href="#" class="btn-text">Add to Cart <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h2 style="color: white;">Need Help With Your Order?</h2>
+                    <p>Our customer service team is ready to assist you with product selection, technical questions, or order modifications.</p>
+                    <div class="hero-btns">
+                        <a href="contact.html" class="cta-button" style="background: var(--white); color: var(--primary);">Contact Support</a>
+                        <a href="faq.html" class="btn-secondary" style="border-color: white; color: white;">Order FAQ</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&q=80&w=2070"
+                            alt="Customer Support" class="hero-image" style="filter: brightness(1.1);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer style="background: var(--secondary); color: var(--white); padding: 80px 0 40px;">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 50px; margin-bottom: 40px;">
+                <div>
+                    <a href="index.html" class="logo" style="color: var(--white); margin-bottom: 1.5rem;">
+                        <i class="fas fa-paint-roller"></i>
+                        <span>PRIME PAINTS</span>
+                    </a>
+                    <p style="color: rgba(255,255,255,0.6); max-width: 300px;">Redefining the art of color for everyday
+                        life. Zambia's choice for premium decorative and industrial coatings.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="solutions.html">Solutions</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Solutions</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="solutions.html">Decorative</a></li>
+                        <li><a href="solutions.html">Industrial</a></li>
+                        <li><a href="solutions.html">Automotive</a></li>
+                        <li><a href="solutions.html">Waterproofing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">More</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="colors.html">Colors</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
+                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Footer Scripts -->
+    <script src="main.js"></script>
+    <script>
+        // Quantity control functionality
+        document.querySelectorAll('.quantity-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const container = this.closest('.quantity-control');
+                const input = container.querySelector('.quantity-input');
+                let value = parseInt(input.value);
+                
+                if (this.textContent === '+') {
+                    input.value = value + 1;
+                } else if (this.textContent === '-' && value > 1) {
+                    input.value = value - 1;
+                }
+                
+                // Update item total (simplified calculation)
+                const priceElement = this.closest('.cart-item').querySelector('.item-price');
+                const totalElement = this.closest('.cart-item').querySelector('.item-total');
+                const price = parseFloat(priceElement.textContent.replace('K', '').replace(',', ''));
+                const quantity = parseInt(input.value);
+                totalElement.textContent = 'K' + (price * quantity).toFixed(2);
+                
+                updateCartTotal();
+            });
+        });
+        
+        // Update cart total function
+        function updateCartTotal() {
+            let subtotal = 0;
+            document.querySelectorAll('.item-total').forEach(element => {
+                subtotal += parseFloat(element.textContent.replace('K', '').replace(',', ''));
+            });
+            
+            const tax = subtotal * 0.16;
+            const delivery = 100;
+            const total = subtotal + tax + delivery;
+            
+            // Update summary values
+            document.querySelectorAll('.summary-row')[0].lastElementChild.textContent = 'K' + subtotal.toFixed(2);
+            document.querySelectorAll('.summary-row')[1].lastElementChild.textContent = 'K' + delivery.toFixed(2);
+            document.querySelectorAll('.summary-row')[2].lastElementChild.textContent = 'K' + tax.toFixed(2);
+            document.querySelector('.summary-total').lastElementChild.textContent = 'K' + total.toFixed(2);
+        }
+        
+        // Remove item functionality
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function() {
+                const cartItem = this.closest('.cart-item');
+                cartItem.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    cartItem.remove();
+                    updateCartTotal();
+                }, 300);
+            });
+        });
+    </script>
+</body>
+
+</html>

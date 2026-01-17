@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Prime Paints Zambia</title>
+    <meta name="description"
+        content="Latest news, tips, and insights about paints and coatings from Prime Paints Zambia.">
+
+    <!-- Meta SEO -->
+    <meta property="og:title" content="Blog | Prime Paints Zambia">
+    <meta property="og:description" content="Expert tips, trends, and news about paints and coatings.">
+    <meta property="og:type" content="website">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin: 2rem 0;
+        }
+        
+        .blog-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .blog-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .blog-card:hover .blog-img img {
+            transform: scale(1.05);
+        }
+        
+        .blog-content {
+            padding: 2rem;
+        }
+        
+        .blog-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .blog-tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .blog-excerpt {
+            color: var(--text-muted);
+            margin: 1.5rem 0;
+            line-height: 1.7;
+        }
+        
+        .blog-read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .blog-read-more:hover {
+            gap: 0.8rem;
+        }
+        
+        .blog-sidebar {
+            background: var(--bg-soft);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+        }
+        
+        .blog-sidebar h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .categories-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .categories-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .categories-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .categories-list a {
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .categories-list a:hover {
+            color: var(--primary);
+        }
+        
+        .recent-posts {
+            margin-top: 2rem;
+        }
+        
+        .recent-post {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .recent-post:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .recent-post-img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        
+        .recent-post-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .recent-post-content {
+            flex: 1;
+        }
+        
+        .recent-post-title {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+            line-height: 1.4;
+        }
+        
+        .recent-post-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .newsletter-form {
+            margin-top: 2rem;
+        }
+        
+        .newsletter-form input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.8rem;
+        }
+        
+        .newsletter-form button {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+        
+        .page-number {
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--text-main);
+        }
+        
+        .page-number.active, .page-number:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Transparent Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-paint-roller"></i>
+                    <span>PRIME PAINTS</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-cta">
+                    <a href="cart.html" class="cta-button">Shop Online</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Blog Hero Section -->
+    <section class="hero" id="blog">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="badge">INSIGHTS & TIPS</div>
+                    <h1>PAINTING<br><span>PERFECTION</span></h1>
+                    <p>Expert tips, trends, and news about paints and coatings. Stay updated with the latest in the world of color and protection.</p>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=2070"
+                            alt="Painting Tips" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Content Section -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest Articles</h2>
+                <p>Discover expert tips, industry insights, and trending topics in paints and coatings.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 3rem;">
+                <div>
+                    <div class="blog-grid">
+                        <!-- Blog Post 1 -->
+                        <div class="blog-card reveal">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=2070" alt="Choosing the Right Paint for Your Climate">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Jan 15, 2026</span>
+                                    <span class="blog-tag">Tips</span>
+                                </div>
+                                <h3>Choosing the Right Paint for Zambia's Climate</h3>
+                                <p class="blog-excerpt">Learn how to select the perfect paint that withstands Zambia's unique weather conditions, from intense sunshine to heavy rains.</p>
+                                <a href="post.html?id=1" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Blog Post 2 -->
+                        <div class="blog-card reveal">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070" alt="Color Psychology">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Jan 12, 2026</span>
+                                    <span class="blog-tag">Design</span>
+                                </div>
+                                <h3>The Psychology of Color in Interior Design</h3>
+                                <p class="blog-excerpt">Explore how different colors affect mood and productivity in your living and working spaces.</p>
+                                <a href="post.html?id=2" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Blog Post 3 -->
+                        <div class="blog-card reveal">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=2070" alt="Painting Techniques">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Jan 10, 2026</span>
+                                    <span class="blog-tag">Techniques</span>
+                                </div>
+                                <h3>Professional Painting Techniques Every DIYer Should Know</h3>
+                                <p class="blog-excerpt">Master the techniques used by professionals to achieve flawless paint finishes at home.</p>
+                                <a href="post.html?id=3" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Blog Post 4 -->
+                        <div class="blog-card reveal">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=2070" alt="Eco-friendly Paints">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Jan 8, 2026</span>
+                                    <span class="blog-tag">Environment</span>
+                                </div>
+                                <h3>Eco-Friendly Paints: Sustainable Choices for Your Home</h3>
+                                <p class="blog-excerpt">Discover our range of environmentally responsible paints that don't compromise on quality.</p>
+                                <a href="post.html?id=4" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Blog Post 5 -->
+                        <div class="blog-card reveal">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=2070" alt="Exterior Painting">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Jan 5, 2026</span>
+                                    <span class="blog-tag">Maintenance</span>
+                                </div>
+                                <h3>Exterior House Painting: Timing and Preparation Tips</h3>
+                                <p class="blog-excerpt">Maximize the lifespan of your exterior paint job with proper timing and preparation.</p>
+                                <a href="post.html?id=5" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Blog Post 6 -->
+                        <div class="blog-card reveal">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=2070" alt="Color Trends">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> Jan 3, 2026</span>
+                                    <span class="blog-tag">Trends</span>
+                                </div>
+                                <h3>2026 Color Trends: What's Hot in Home Design</h3>
+                                <p class="blog-excerpt">Stay ahead of the curve with the latest color trends that will define 2026 interiors.</p>
+                                <a href="post.html?id=6" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <a href="#" class="page-number active">1</a>
+                        <a href="#" class="page-number">2</a>
+                        <a href="#" class="page-number">3</a>
+                        <a href="#" class="page-number"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+                    <div class="blog-sidebar">
+                        <h3>Categories</h3>
+                        <ul class="categories-list">
+                            <li><a href="#">Painting Tips <span>(12)</span></a></li>
+                            <li><a href="#">Color Trends <span>(8)</span></a></li>
+                            <li><a href="#">Interior Design <span>(15)</span></a></li>
+                            <li><a href="#">Exterior Painting <span>(7)</span></a></li>
+                            <li><a href="#">Product Guides <span>(10)</span></a></li>
+                            <li><a href="#">Maintenance <span>(5)</span></a></li>
+                            <li><a href="#">Eco-Friendly <span>(6)</span></a></li>
+                        </ul>
+
+                        <div class="recent-posts">
+                            <h3>Recent Posts</h3>
+                            <div class="recent-post">
+                                <div class="recent-post-img">
+                                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=100" alt="Recent Post">
+                                </div>
+                                <div class="recent-post-content">
+                                    <a href="post.html?id=1" class="recent-post-title">Choosing the Right Paint for Zambia's Climate</a>
+                                    <div class="recent-post-date">Jan 15, 2026</div>
+                                </div>
+                            </div>
+                            <div class="recent-post">
+                                <div class="recent-post-img">
+                                    <img src="https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=100" alt="Recent Post">
+                                </div>
+                                <div class="recent-post-content">
+                                    <a href="post.html?id=2" class="recent-post-title">The Psychology of Color in Interior Design</a>
+                                    <div class="recent-post-date">Jan 12, 2026</div>
+                                </div>
+                            </div>
+                            <div class="recent-post">
+                                <div class="recent-post-img">
+                                    <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=100" alt="Recent Post">
+                                </div>
+                                <div class="recent-post-content">
+                                    <a href="post.html?id=3" class="recent-post-title">Professional Painting Techniques Every DIYer Should Know</a>
+                                    <div class="recent-post-date">Jan 10, 2026</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="newsletter-form">
+                            <h3>Subscribe to Newsletter</h3>
+                            <p>Get the latest posts and exclusive tips delivered straight to your inbox.</p>
+                            <input type="email" placeholder="Your email address">
+                            <button>Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section id="featured-article">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Article</h2>
+                <p>A closer look at one of our most popular blog posts.</p>
+            </div>
+
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <span class="blog-tag" style="display: inline-block; margin-bottom: 1rem;">INSIGHT</span>
+                    <h3 style="font-size: 2.5rem; margin-bottom: 1.5rem;">The Future of Sustainable Paints in Zambia</h3>
+                    <p>As environmental consciousness grows globally, the paint industry is evolving rapidly. In Zambia, we're at the forefront of developing sustainable solutions that don't compromise on quality or performance. Learn about the innovations shaping the future of our industry and how Prime Paints is leading the charge.</p>
+                    <ul style="margin: 1.5rem 0; color: var(--text-muted);">
+                        <li style="margin-bottom: 0.8rem;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 0.5rem;"></i> Eco-friendly formulations that perform as well as traditional paints</li>
+                        <li style="margin-bottom: 0.8rem;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 0.5rem;"></i> Reduced volatile organic compounds (VOCs) for healthier indoor air</li>
+                        <li style="margin-bottom: 0.8rem;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 0.5rem;"></i> Innovative packaging that reduces waste</li>
+                        <li style="margin-bottom: 0.8rem;"><i class="fas fa-check-circle" style="color: var(--primary); margin-right: 0.5rem;"></i> Water-based solutions for superior durability</li>
+                    </ul>
+                    <a href="post.html?id=7" class="cta-button" style="margin-top: 1rem;">Read Full Article</a>
+                </div>
+                <div class="hero-visual reveal">
+                    <div class="hero-image-wrapper" style="aspect-ratio: 1/1;">
+                        <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=2070"
+                            alt="Sustainable Paints" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h2 style="color: white;">Stay Updated</h2>
+                    <p>Subscribe to our blog to receive the latest tips, trends, and insights about paints and coatings directly in your inbox. Join our community of painting enthusiasts and professionals.</p>
+                    <div class="hero-btns">
+                        <a href="#" class="cta-button" style="background: var(--white); color: var(--primary);">Subscribe Now</a>
+                        <a href="contact.html" class="btn-secondary" style="border-color: white; color: white;">Contact Us</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=2070"
+                            alt="Painting Community" class="hero-image" style="filter: brightness(1.1);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer style="background: var(--secondary); color: var(--white); padding: 80px 0 40px;">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 50px; margin-bottom: 40px;">
+                <div>
+                    <a href="index.html" class="logo" style="color: var(--white); margin-bottom: 1.5rem;">
+                        <i class="fas fa-paint-roller"></i>
+                        <span>PRIME PAINTS</span>
+                    </a>
+                    <p style="color: rgba(255,255,255,0.6); max-width: 300px;">Redefining the art of color for everyday
+                        life. Zambia's choice for premium decorative and industrial coatings.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="solutions.html">Solutions</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Solutions</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="solutions.html">Decorative</a></li>
+                        <li><a href="solutions.html">Industrial</a></li>
+                        <li><a href="solutions.html">Automotive</a></li>
+                        <li><a href="solutions.html">Waterproofing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">More</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="colors.html">Colors</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
+                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Footer Scripts -->
+    <script src="main.js"></script>
+</body>
+
+</html>

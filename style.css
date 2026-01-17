@@ -1,0 +1,450 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary: #D9232D;
+    --primary-dark: #b01c24;
+    --secondary: #1a1a1a;
+    --accent: #3498db;
+    --text-main: #1f1f1f;
+    --text-muted: #666666;
+    --bg-light: #ffffff;
+    --bg-soft: #f4f7f6;
+    --white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.85);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 32px;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    line-height: 1.6;
+    color: var(--text-main);
+    background-color: var(--bg-light);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+}
+
+/* --- Utilities --- */
+.badge {
+    background: rgba(217, 35, 45, 0.1);
+    color: var(--primary);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+/* --- Header & Navigation --- */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: transparent;
+    padding: 1.5rem 0;
+    transition: var(--transition);
+}
+
+header.scrolled {
+    padding: 0.8rem 0;
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.logo i {
+    color: var(--primary);
+    font-size: 1.8rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 3rem;
+}
+
+.nav-links a {
+    font-weight: 500;
+    color: var(--secondary);
+    font-size: 1.05rem;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.nav-cta .cta-button {
+    background: var(--primary);
+    color: var(--white);
+    padding: 0.9rem 2rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(217, 35, 45, 0.25);
+}
+
+.nav-cta .cta-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(217, 35, 45, 0.35);
+}
+
+/* --- Hero Section --- */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+}
+
+.hero-content h1 {
+    font-size: 5rem;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    color: var(--secondary);
+    letter-spacing: -2px;
+}
+
+.hero-content h1 span {
+    color: var(--primary);
+    position: relative;
+    display: inline-block;
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    max-width: 580px;
+}
+
+.hero-btns {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.btn-secondary {
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
+    padding: 0.9rem 2.2rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background: var(--secondary);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+.hero-visual {
+    position: relative;
+}
+
+.hero-image-wrapper {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 4/5;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+    transition: transform 10s ease-out;
+}
+
+.hero:hover .hero-image {
+    transform: scale(1.0);
+}
+
+.color-badge {
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    gap: 1rem;
+    z-index: 5;
+}
+
+.swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.swatch.red {
+    background: #D9232D;
+}
+
+.swatch.blue {
+    background: #2980b9;
+}
+
+.swatch.green {
+    background: #27ae60;
+}
+
+/* --- Sections --- */
+section {
+    padding: 120px 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 80px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-header h2 {
+    font-size: 3.5rem;
+    color: var(--secondary);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.section-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* --- Product Cards --- */
+.product-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.product-img {
+    height: 250px;
+    overflow: hidden;
+}
+
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.product-card:hover .product-img img {
+    transform: scale(1.1);
+}
+
+.product-info {
+    padding: 2rem;
+}
+
+.product-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-info p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.price {
+    display: block;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.btn-text {
+    color: var(--secondary);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-text:hover {
+    color: var(--primary);
+}
+
+/* --- Features / Categories --- */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+}
+
+.feature-card {
+    background: var(--bg-soft);
+    padding: 3.5rem 2.5rem;
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.feature-card:hover {
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(0, 0, 0, 0.05);
+    transform: translateY(-10px);
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.feature-card h3 {
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: var(--text-muted);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+    .hero-content h1 {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-content p {
+        margin: 0 auto 3rem;
+    }
+
+    .hero-btns {
+        justify-content: center;
+    }
+
+    .hero-image-wrapper {
+        aspect-ratio: 16/9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .color-badge {
+        display: none;
+    }
+}

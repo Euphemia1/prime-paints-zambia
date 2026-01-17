@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Prime Paints Zambia</title>
+    <meta name="description"
+        content="View our gallery of paint applications and transformations using Prime Paints products.">
+
+    <!-- Meta SEO -->
+    <meta property="og:title" content="Gallery | Prime Paints Zambia">
+    <meta property="og:description" content="See beautiful transformations using our premium paints.">
+    <meta property="og:type" content="website">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            height: 300px;
+            cursor: pointer;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 1.5rem 1rem 1rem;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+        .gallery-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 2;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius-md);
+            background: var(--bg-soft);
+            border: 2px solid transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Transparent Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-paint-roller"></i>
+                    <span>PRIME PAINTS</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-cta">
+                    <a href="cart.html" class="cta-button">Shop Online</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Gallery Hero Section -->
+    <section class="hero" id="gallery">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="badge">INSPIRATION GALLERY</div>
+                    <h1>TRANSFORMATIONS<br><span>THAT INSPIRE</span></h1>
+                    <p>Explore our gallery of stunning transformations using Prime Paints products. See how our premium paints have brought spaces to life across Zambia.</p>
+                    <div class="hero-btns">
+                        <a href="#gallery-grid" class="cta-button">View Gallery</a>
+                        <a href="contact.html" class="btn-secondary">Share Your Project</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070"
+                            alt="Prime Paints Gallery" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Filter -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Filter By Category</h2>
+                <p>Explore different types of paint applications and transformations.</p>
+            </div>
+
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="residential">Residential</button>
+                <button class="filter-btn" data-filter="commercial">Commercial</button>
+                <button class="filter-btn" data-filter="industrial">Industrial</button>
+                <button class="filter-btn" data-filter="exterior">Exterior</button>
+                <button class="filter-btn" data-filter="interior">Interior</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section id="gallery-grid">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Transformations</h2>
+                <p>See how our premium paints have transformed spaces across Zambia.</p>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item" data-category="residential" onclick="openModal('https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Residential</div>
+                    <img src="https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=2070" alt="Modern Living Room">
+                    <div class="gallery-overlay">
+                        <h3>Modern Living Room</h3>
+                        <p>Using DuraCoat Silk in Warm Beige</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item" data-category="commercial" onclick="openModal('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Commercial</div>
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070" alt="Office Space">
+                    <div class="gallery-overlay">
+                        <h3>Modern Office Space</h3>
+                        <p>Using DuraCoat Walls & Ceiling in Pure White</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item" data-category="exterior" onclick="openModal('https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Exterior</div>
+                    <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=2070" alt="House Exterior">
+                    <div class="gallery-overlay">
+                        <h3>House Exterior Transformation</h3>
+                        <p>Using WeatherTex in Classic Blue</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item" data-category="industrial" onclick="openModal('https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Industrial</div>
+                    <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=2070" alt="Industrial Building">
+                    <div class="gallery-overlay">
+                        <h3>Industrial Building</h3>
+                        <p>Using Anti-Rust Enamel in Safety Red</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item" data-category="residential" onclick="openModal('https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Residential</div>
+                    <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=2070" alt="Bedroom Makeover">
+                    <div class="gallery-overlay">
+                        <h3>Bedroom Makeover</h3>
+                        <p>Using Velvet Matt Emulsion in Soft Grey</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item" data-category="commercial" onclick="openModal('https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Commercial</div>
+                    <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=2070" alt="Restaurant Interior">
+                    <div class="gallery-overlay">
+                        <h3>Restaurant Interior</h3>
+                        <p>Using DuraCoat Sheen in Warm Taupe</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 7 -->
+                <div class="gallery-item" data-category="exterior" onclick="openModal('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Exterior</div>
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070" alt="Fence Painting">
+                    <div class="gallery-overlay">
+                        <h3>Fence Painting</h3>
+                        <p>Using WeatherTex in Forest Green</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 8 -->
+                <div class="gallery-item" data-category="interior" onclick="openModal('https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Interior</div>
+                    <img src="https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=2070" alt="Kitchen Remodel">
+                    <div class="gallery-overlay">
+                        <h3>Kitchen Remodel</h3>
+                        <p>Using DuraCoat Silk in Clean White</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 9 -->
+                <div class="gallery-item" data-category="residential" onclick="openModal('https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=2070')">
+                    <div class="gallery-category">Residential</div>
+                    <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=2070" alt="Bathroom Refresh">
+                    <div class="gallery-overlay">
+                        <h3>Bathroom Refresh</h3>
+                        <p>Using Waterproof Coating in Crisp White</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Before & After Section -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Before & After Transformations</h2>
+                <p>See dramatic improvements achieved with our premium paint products.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal" style="text-align: center; padding: 2rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="flex: 1;">
+                            <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=600" alt="Before" style="width: 100%; border-radius: var(--radius-sm);">
+                            <p style="margin-top: 0.5rem; font-weight: 600;">Before</p>
+                        </div>
+                        <div style="flex: 1;">
+                            <img src="https://images.unsplash.com/photo-1613694848472-11352a3d4aeb?auto=format&fit=crop&q=80&w=600" alt="After" style="width: 100%; border-radius: var(--radius-sm);">
+                            <p style="margin-top: 0.5rem; font-weight: 600;">After</p>
+                        </div>
+                    </div>
+                    <h3>Living Room Makeover</h3>
+                    <p>Using DuraCoat Silk in Warm Beige and accent wall in Charcoal Grey</p>
+                </div>
+
+                <div class="feature-card reveal" style="text-align: center; padding: 2rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="flex: 1;">
+                            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=600" alt="Before" style="width: 100%; border-radius: var(--radius-sm);">
+                            <p style="margin-top: 0.5rem; font-weight: 600;">Before</p>
+                        </div>
+                        <div style="flex: 1;">
+                            <img src="https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80&w=600" alt="After" style="width: 100%; border-radius: var(--radius-sm);">
+                            <p style="margin-top: 0.5rem; font-weight: 600;">After</p>
+                        </div>
+                    </div>
+                    <h3>Office Space Renovation</h3>
+                    <p>Using DuraCoat Walls & Ceiling in Pure White with blue accent walls</p>
+                </div>
+
+                <div class="feature-card reveal" style="text-align: center; padding: 2rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="flex: 1;">
+                            <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=600" alt="Before" style="width: 100%; border-radius: var(--radius-sm);">
+                            <p style="margin-top: 0.5rem; font-weight: 600;">Before</p>
+                        </div>
+                        <div style="flex: 1;">
+                            <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=600" alt="After" style="width: 100%; border-radius: var(--radius-sm);">
+                            <p style="margin-top: 0.5rem; font-weight: 600;">After</p>
+                        </div>
+                    </div>
+                    <h3>Exterior House Painting</h3>
+                    <p>Using WeatherTex in Stone Grey with white trim details</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section id="featured">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Projects</h2>
+                <p>Highlighted transformations that showcase the power of our premium paints.</p>
+            </div>
+
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h3 style="font-size: 2.5rem; margin-bottom: 2rem;">Luxury Hotel Lobby</h3>
+                    <p>Transformed a dated hotel lobby with our premium DuraCoat Silk collection. The rich textures and colors created an inviting atmosphere that guests love.</p>
+                    <ul style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Premium DuraCoat Silk</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Custom color mixing</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Professional application</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> 5-year warranty</li>
+                    </ul>
+                    <div class="hero-btns" style="margin-top: 2rem;">
+                        <a href="contact.html" class="cta-button">Start Your Project</a>
+                        <a href="products.html" class="btn-secondary">View Products</a>
+                    </div>
+                </div>
+                <div class="hero-visual reveal">
+                    <div class="hero-image-wrapper" style="aspect-ratio: 1/1;">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070"
+                            alt="Luxury Hotel Lobby" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Testimonials -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Hear from clients who have transformed their spaces with our products.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-right: 1rem;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4>Michael Sata</h4>
+                            <p style="color: var(--primary);">Homeowner</p>
+                        </div>
+                    </div>
+                    <p>"The transformation of our living room exceeded our expectations. The color stayed vibrant and fresh even after two years of direct sunlight exposure."</p>
+                    <div style="margin-top: 1rem; color: var(--primary);">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-right: 1rem;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4>Sarah Mweetwa</h4>
+                            <p style="color: var(--primary);">Restaurant Owner</p>
+                        </div>
+                    </div>
+                    <p>"We used Prime Paints for our restaurant interior. The colors are beautiful and have held up perfectly despite constant cleaning and heavy traffic."</p>
+                    <div style="margin-top: 1rem; color: var(--primary);">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-right: 1rem;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4>David Kaunda</h4>
+                            <p style="color: var(--primary);">Contractor</p>
+                        </div>
+                    </div>
+                    <p>"As a contractor, I trust Prime Paints for all my projects. The coverage is excellent, and the colors remain consistent batch after batch."</p>
+                    <div style="margin-top: 1rem; color: var(--primary);">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Share Your Project -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2>Share Your Transformation</h2>
+                <p>Have you used our products for a project? We'd love to feature it in our gallery!</p>
+            </div>
+
+            <div class="hero-grid">
+                <div class="hero-visual reveal">
+                    <div class="hero-image-wrapper" style="aspect-ratio: 1/1;">
+                        <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=2070"
+                            alt="Share Your Project" class="hero-image">
+                    </div>
+                </div>
+                <div class="hero-content">
+                    <h3 style="font-size: 2.5rem; margin-bottom: 2rem;">Submit Your Project</h3>
+                    <p>Send us photos of your completed project along with details about the products you used. Selected projects will be featured in our gallery and social media.</p>
+                    <ul style="margin-top: 2rem; display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> High-quality before and after photos</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Description of the project</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Products used</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Your contact information</li>
+                    </ul>
+                    <div class="hero-btns" style="margin-top: 2rem;">
+                        <a href="contact.html" class="cta-button">Submit Project</a>
+                        <a href="products.html" class="btn-secondary">View Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h2 style="color: white;">Ready for Your Transformation?</h2>
+                    <p>Visit our showroom to see our complete color range, or let our experts help you choose the perfect products for your next project.</p>
+                    <div class="hero-btns">
+                        <a href="colors.html" class="cta-button" style="background: var(--white); color: var(--primary);">Explore Colors</a>
+                        <a href="contact.html" class="btn-secondary" style="border-color: white; color: white;">Schedule Visit</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1589939705384-5185138a047a?auto=format&fit=crop&q=80&w=2070"
+                            alt="Painting Supplies" class="hero-image" style="filter: brightness(1.1);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Gallery Images -->
+    <div class="modal" id="imageModal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Premium Footer -->
+    <footer style="background: var(--secondary); color: var(--white); padding: 80px 0 40px;">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 50px; margin-bottom: 40px;">
+                <div>
+                    <a href="index.html" class="logo" style="color: var(--white); margin-bottom: 1.5rem;">
+                        <i class="fas fa-paint-roller"></i>
+                        <span>PRIME PAINTS</span>
+                    </a>
+                    <p style="color: rgba(255,255,255,0.6); max-width: 300px;">Redefining the art of color for everyday
+                        life. Zambia's choice for premium decorative and industrial coatings.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="solutions.html">Solutions</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Solutions</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li>Decorative</li>
+                        <li>Industrial</li>
+                        <li>Automotive</li>
+                        <li>Waterproofing</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
+                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Footer Scripts -->
+    <script src="main.js"></script>
+    <script>
+        // Gallery modal functionality
+        function openModal(imageSrc) {
+            document.getElementById('modalImage').src = imageSrc;
+            document.getElementById('imageModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Gallery filtering functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                const filterValue = this.getAttribute('data-filter');
+                
+                // Filter gallery items
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

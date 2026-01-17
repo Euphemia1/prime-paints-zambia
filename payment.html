@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | Prime Paints Zambia</title>
+    <meta name="description"
+        content="Secure payment options for Prime Paints Zambia products. Pay via MTN/airtel mobile money or bank transfer.">
+
+    <!-- Meta SEO -->
+    <meta property="og:title" content="Secure Payment | Prime Paints Zambia">
+    <meta property="og:description" content="Safe and convenient payment options for your paint purchases.">
+    <meta property="og:type" content="website">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .payment-option {
+            border: 2px solid #eee;
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .payment-option:hover, .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(217, 35, 45, 0.05);
+        }
+        
+        .payment-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .mobile-money-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .mobile-provider {
+            text-align: center;
+        }
+        
+        .provider-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .mtn { background: #EC1C24; }
+        .airtel { background: #FF6600; }
+        
+        .payment-form {
+            background: var(--bg-soft);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+        }
+        
+        .order-summary {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Transparent Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-paint-roller"></i>
+                    <span>PRIME PAINTS</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-cta">
+                    <a href="cart.html" class="cta-button">Shop Online</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Payment Hero Section -->
+    <section class="hero" id="payment">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="badge">SECURE PAYMENT</div>
+                    <h1>COMPLETE YOUR<br><span>PURCHASE</span></h1>
+                    <p>Choose your preferred payment method to securely complete your order. All transactions are encrypted and secure.</p>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1581578021424-ebdc0b4a0a88?auto=format&fit=crop&q=80&w=2070"
+                            alt="Secure Payment" class="hero-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Methods Section -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Payment Options</h2>
+                <p>Select your preferred payment method to complete your purchase.</p>
+            </div>
+
+            <div class="payment-methods">
+                <div class="payment-option" onclick="selectPaymentMethod('mobile')">
+                    <div class="payment-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Money</h3>
+                    <p>Pay instantly using your mobile wallet</p>
+                    <div class="mobile-money-icons">
+                        <div class="mobile-provider">
+                            <div class="provider-icon mtn">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <small>MTN Mobile Money</small>
+                        </div>
+                        <div class="mobile-provider">
+                            <div class="provider-icon airtel">
+                                <i class="fas fa-signal"></i>
+                            </div>
+                            <small>Airtel Money</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-option" onclick="selectPaymentMethod('bank')">
+                    <div class="payment-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3>Bank Transfer</h3>
+                    <p>Direct bank deposit to our secure account</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+                        Bank: First National Bank (FNB)<br>
+                        Account: 123456789012<br>
+                        SWIFT: FIRNZMLXXX
+                    </p>
+                </div>
+
+                <div class="payment-option" onclick="selectPaymentMethod('card')">
+                    <div class="payment-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Credit/Debit Card</h3>
+                    <p>Visa, MasterCard, and other major cards accepted</p>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Order Summary</h3>
+                <div class="summary-item">
+                    <span>Prime Super Gloss (4L)</span>
+                    <span>K450.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Velvet Matt Emulsion (4L)</span>
+                    <span>K380.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>WallCoat Plaster Primer (2L)</span>
+                    <span>K350.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Delivery Fee</span>
+                    <span>K100.00</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total:</span>
+                    <span>K1,280.00</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Form -->
+    <section id="payment-form">
+        <div class="container">
+            <div class="section-header">
+                <h2>Payment Details</h2>
+                <p>Enter your payment information to complete your purchase.</p>
+            </div>
+
+            <div class="payment-form">
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="Enter your email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                    </div>
+
+                    <!-- Mobile Money Section -->
+                    <div id="mobilePaymentSection" style="display: none;">
+                        <div class="form-group">
+                            <label for="mobileProvider">Select Mobile Provider</label>
+                            <select id="mobileProvider" name="mobileProvider" required>
+                                <option value="">Choose your provider</option>
+                                <option value="mtn">MTN Mobile Money</option>
+                                <option value="airtel">Airtel Money</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobileNumber">Mobile Number</label>
+                            <input type="tel" id="mobileNumber" name="mobileNumber" required placeholder="Enter your mobile number (e.g. +260977123456)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="referenceNumber">Reference Number</label>
+                            <input type="text" id="referenceNumber" name="referenceNumber" readonly value="PP-2026-001234" placeholder="Reference will be generated">
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">Please use this reference number when making your mobile money payment</small>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Section -->
+                    <div id="bankPaymentSection" style="display: none;">
+                        <div class="form-group">
+                            <label>Bank Transfer Instructions</label>
+                            <div style="background: var(--bg-soft); padding: 1.5rem; border-radius: var(--radius-sm);">
+                                <h4 style="color: var(--primary); margin-bottom: 1rem;">Bank Transfer Details:</h4>
+                                <p><strong>Bank:</strong> First National Bank (FNB)</p>
+                                <p><strong>Account Name:</strong> Prime Paints Zambia Ltd</p>
+                                <p><strong>Account Number:</strong> 123456789012</p>
+                                <p><strong>Branch Code:</strong> 000012</p>
+                                <p><strong>Reference:</strong> PP-2026-001234</p>
+                                <p style="margin-top: 1rem; color: var(--primary);"><i class="fas fa-info-circle"></i> Please include the reference number in your transfer description.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transactionId">Transaction ID</label>
+                            <input type="text" id="transactionId" name="transactionId" placeholder="Enter your bank transaction ID">
+                        </div>
+                    </div>
+
+                    <!-- Credit Card Section -->
+                    <div id="cardPaymentSection" style="display: none;">
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" required style="margin-right: 0.5rem;">
+                            I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="cta-button" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;">
+                        <i class="fas fa-lock"></i> Secure Payment - K1,280.00
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security & Trust -->
+    <section style="background: var(--bg-soft);">
+        <div class="container">
+            <div class="section-header">
+                <h2>Security & Trust</h2>
+                <p>We prioritize the security of your transactions and personal information.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Transactions</h3>
+                    <p>All payments are processed through encrypted connections with bank-level security.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Data Protection</h3>
+                    <p>Your financial information is never stored on our servers and is securely transmitted.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>Instant Confirmation</h3>
+                    <p>Receive immediate confirmation of your payment and order status updates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h2 style="color: white;">Questions About Payment?</h2>
+                    <p>Our customer service team is ready to assist you with any questions about our payment methods or to help you complete your purchase.</p>
+                    <div class="hero-btns">
+                        <a href="contact.html" class="cta-button" style="background: var(--white); color: var(--primary);">Contact Support</a>
+                        <a href="faq.html" class="btn-secondary" style="border-color: white; color: white;">Payment FAQ</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&q=80&w=2070"
+                            alt="Payment Support" class="hero-image" style="filter: brightness(1.1);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer style="background: var(--secondary); color: var(--white); padding: 80px 0 40px;">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 50px; margin-bottom: 40px;">
+                <div>
+                    <a href="index.html" class="logo" style="color: var(--white); margin-bottom: 1.5rem;">
+                        <i class="fas fa-paint-roller"></i>
+                        <span>PRIME PAINTS</span>
+                    </a>
+                    <p style="color: rgba(255,255,255,0.6); max-width: 300px;">Redefining the art of color for everyday
+                        life. Zambia's choice for premium decorative and industrial coatings.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Quick Links</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="solutions.html">Solutions</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Solutions</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="solutions.html">Decorative</a></li>
+                        <li><a href="solutions.html">Industrial</a></li>
+                        <li><a href="solutions.html">Automotive</a></li>
+                        <li><a href="solutions.html">Waterproofing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">More</h4>
+                    <ul style="color: rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="colors.html">Colors</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1.5rem;">Social</h4>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#"
+                            style="width: 40px; height: 40px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%;"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
+                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Footer Scripts -->
+    <script src="main.js"></script>
+    <script>
+        function selectPaymentMethod(method) {
+            // Remove selected class from all options
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Hide all payment sections
+            document.getElementById('mobilePaymentSection').style.display = 'none';
+            document.getElementById('bankPaymentSection').style.display = 'none';
+            document.getElementById('cardPaymentSection').style.display = 'none';
+            
+            // Show selected payment section
+            if (method === 'mobile') {
+                document.getElementById('mobilePaymentSection').style.display = 'block';
+            } else if (method === 'bank') {
+                document.getElementById('bankPaymentSection').style.display = 'block';
+            } else if (method === 'card') {
+                document.getElementById('cardPaymentSection').style.display = 'block';
+            }
+        }
+        
+        // Form submission handling
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get selected payment method
+            const selectedMethod = document.querySelector('.payment-option.selected');
+            if (!selectedMethod) {
+                alert('Please select a payment method.');
+                return;
+            }
+            
+            // Process payment based on selected method
+            const methodText = selectedMethod.querySelector('h3').textContent;
+            
+            // In a real implementation, you would send this data to your server
+            alert(`Payment initiated via ${methodText}. You will receive instructions shortly to complete your purchase.`);
+            
+            // Reset form
+            this.reset();
+            
+            // Hide payment sections
+            document.getElementById('mobilePaymentSection').style.display = 'none';
+            document.getElementById('bankPaymentSection').style.display = 'none';
+            document.getElementById('cardPaymentSection').style.display = 'none';
+            
+            // Remove selected class
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+        });
+    </script>
+</body>
+
+</html>
