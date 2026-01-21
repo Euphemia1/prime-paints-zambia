@@ -23,7 +23,7 @@
             gap: 1.5rem;
             margin: 2rem 0;
         }
-        
+
         .payment-option {
             border: 2px solid #eee;
             border-radius: var(--radius-md);
@@ -32,12 +32,13 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        
-        .payment-option:hover, .payment-option.selected {
+
+        .payment-option:hover,
+        .payment-option.selected {
             border-color: var(--primary);
             background: rgba(217, 35, 45, 0.05);
         }
-        
+
         .payment-icon {
             width: 80px;
             height: 80px;
@@ -50,18 +51,18 @@
             margin: 0 auto 1.5rem;
             font-size: 2rem;
         }
-        
+
         .mobile-money-icons {
             display: flex;
             justify-content: center;
             gap: 2rem;
             margin: 1.5rem 0;
         }
-        
+
         .mobile-provider {
             text-align: center;
         }
-        
+
         .provider-icon {
             width: 60px;
             height: 60px;
@@ -73,35 +74,42 @@
             font-size: 1.5rem;
             color: white;
         }
-        
-        .mtn { background: #EC1C24; }
-        .airtel { background: #FF6600; }
-        
+
+        .mtn {
+            background: #EC1C24;
+        }
+
+        .airtel {
+            background: #FF6600;
+        }
+
         .payment-form {
             background: var(--bg-soft);
             padding: 2rem;
             border-radius: var(--radius-md);
             margin: 2rem 0;
         }
-        
+
         .form-group {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
-        
-        .form-group input, .form-group select, .form-group textarea {
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 1rem;
             border: 1px solid #ddd;
             border-radius: var(--radius-sm);
             font-family: inherit;
         }
-        
+
         .order-summary {
             background: var(--white);
             padding: 1.5rem;
@@ -109,7 +117,7 @@
             margin: 2rem 0;
             box-shadow: var(--shadow-sm);
         }
-        
+
         .summary-item {
             display: flex;
             justify-content: space-between;
@@ -117,7 +125,7 @@
             padding-bottom: 0.8rem;
             border-bottom: 1px solid #eee;
         }
-        
+
         .summary-total {
             display: flex;
             justify-content: space-between;
@@ -126,6 +134,50 @@
             margin-top: 1rem;
             padding-top: 1rem;
             border-top: 2px solid var(--primary);
+        }
+
+        /* Processing Overlay */
+        .payment-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .overlay-content {
+            max-width: 500px;
+        }
+
+        .processing-spinner {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .pin-hint {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin-top: 2rem;
+            border: 1px border-dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .status-success {
+            color: #2ecc71;
+        }
+
+        .status-error {
+            color: #e74c3c;
         }
     </style>
 </head>
@@ -161,7 +213,8 @@
                 <div class="hero-content">
                     <div class="badge">SECURE PAYMENT</div>
                     <h1>COMPLETE YOUR<br><span>PURCHASE</span></h1>
-                    <p>Choose your preferred payment method to securely complete your order. All transactions are encrypted and secure.</p>
+                    <p>Choose your preferred payment method to securely complete your order. All transactions are
+                        encrypted and secure.</p>
                 </div>
                 <div class="hero-visual">
                     <div class="hero-image-wrapper">
@@ -291,13 +344,16 @@
 
                         <div class="form-group">
                             <label for="mobileNumber">Mobile Number</label>
-                            <input type="tel" id="mobileNumber" name="mobileNumber" required placeholder="Enter your mobile number (e.g. +260977123456)">
+                            <input type="tel" id="mobileNumber" name="mobileNumber" required
+                                placeholder="Enter your mobile number (e.g. +260977123456)">
                         </div>
 
                         <div class="form-group">
                             <label for="referenceNumber">Reference Number</label>
-                            <input type="text" id="referenceNumber" name="referenceNumber" readonly value="PP-2026-001234" placeholder="Reference will be generated">
-                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">Please use this reference number when making your mobile money payment</small>
+                            <input type="text" id="referenceNumber" name="referenceNumber" readonly
+                                value="PP-2026-001234" placeholder="Reference will be generated">
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">Please use this
+                                reference number when making your mobile money payment</small>
                         </div>
                     </div>
 
@@ -312,13 +368,15 @@
                                 <p><strong>Account Number:</strong> 123456789012</p>
                                 <p><strong>Branch Code:</strong> 000012</p>
                                 <p><strong>Reference:</strong> PP-2026-001234</p>
-                                <p style="margin-top: 1rem; color: var(--primary);"><i class="fas fa-info-circle"></i> Please include the reference number in your transfer description.</p>
+                                <p style="margin-top: 1rem; color: var(--primary);"><i class="fas fa-info-circle"></i>
+                                    Please include the reference number in your transfer description.</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="transactionId">Transaction ID</label>
-                            <input type="text" id="transactionId" name="transactionId" placeholder="Enter your bank transaction ID">
+                            <input type="text" id="transactionId" name="transactionId"
+                                placeholder="Enter your bank transaction ID">
                         </div>
                     </div>
 
@@ -326,7 +384,8 @@
                     <div id="cardPaymentSection" style="display: none;">
                         <div class="form-group">
                             <label for="cardNumber">Card Number</label>
-                            <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                            <input type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000"
+                                maxlength="19">
                         </div>
 
                         <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
@@ -344,7 +403,8 @@
                     <div class="form-group">
                         <label>
                             <input type="checkbox" required style="margin-right: 0.5rem;">
-                            I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>
+                            I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a> and <a
+                                href="privacy.html" target="_blank">Privacy Policy</a>
                         </label>
                     </div>
 
@@ -393,15 +453,19 @@
     </section>
 
     <!-- CTA Section -->
-    <section style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
+    <section
+        style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
                     <h2 style="color: white;">Questions About Payment?</h2>
-                    <p>Our customer service team is ready to assist you with any questions about our payment methods or to help you complete your purchase.</p>
+                    <p>Our customer service team is ready to assist you with any questions about our payment methods or
+                        to help you complete your purchase.</p>
                     <div class="hero-btns">
-                        <a href="contact.html" class="cta-button" style="background: var(--white); color: var(--primary);">Contact Support</a>
-                        <a href="faq.html" class="btn-secondary" style="border-color: white; color: white;">Payment FAQ</a>
+                        <a href="contact.html" class="cta-button"
+                            style="background: var(--white); color: var(--primary);">Contact Support</a>
+                        <a href="faq.html" class="btn-secondary" style="border-color: white; color: white;">Payment
+                            FAQ</a>
                     </div>
                 </div>
                 <div class="hero-visual">
@@ -471,10 +535,36 @@
                 </div>
             </div>
             <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
-                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.</p>
+                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.
+                </p>
             </div>
         </div>
     </footer>
+
+    <!-- Payment Processing Overlay -->
+    <div id="paymentOverlay" class="payment-overlay">
+        <div class="overlay-content">
+            <div id="overlayIcon" class="processing-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <h2 id="overlayTitle" style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">Initiating Payment...
+            </h2>
+            <p id="overlayMessage" style="font-size: 1.2rem; opacity: 0.9;">Please wait while we connect to the payment
+                gateway.</p>
+
+            <div id="pinPrompt" class="pin-hint" style="display: none;">
+                <i class="fas fa-mobile-alt" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                <h4 style="margin-bottom: 0.5rem;">CHECK YOUR PHONE!</h4>
+                <p>A PIN prompt has been sent to <strong id="promptPhone"></strong>. Enter your mobile money PIN to
+                    complete the transaction.</p>
+            </div>
+
+            <div id="overlayActions" style="margin-top: 2rem; display: none;">
+                <button onclick="closeOverlay()" class="btn-secondary" style="border-color: white; color: white;">Close
+                    Window</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer Scripts -->
     <script src="main.js"></script>
@@ -484,15 +574,16 @@
             document.querySelectorAll('.payment-option').forEach(option => {
                 option.classList.remove('selected');
             });
-            
+
             // Add selected class to clicked option
-            event.currentTarget.classList.add('selected');
-            
+            const clickedOption = event.currentTarget || document.querySelector(`.payment-option[onclick*="${method}"]`);
+            if (clickedOption) clickedOption.classList.add('selected');
+
             // Hide all payment sections
             document.getElementById('mobilePaymentSection').style.display = 'none';
             document.getElementById('bankPaymentSection').style.display = 'none';
             document.getElementById('cardPaymentSection').style.display = 'none';
-            
+
             // Show selected payment section
             if (method === 'mobile') {
                 document.getElementById('mobilePaymentSection').style.display = 'block';
@@ -502,36 +593,85 @@
                 document.getElementById('cardPaymentSection').style.display = 'block';
             }
         }
-        
+
+        function closeOverlay() {
+            document.getElementById('paymentOverlay').style.display = 'none';
+        }
+
         // Form submission handling
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        document.getElementById('paymentForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             // Get selected payment method
             const selectedMethod = document.querySelector('.payment-option.selected');
             if (!selectedMethod) {
                 alert('Please select a payment method.');
                 return;
             }
-            
-            // Process payment based on selected method
-            const methodText = selectedMethod.querySelector('h3').textContent;
-            
-            // In a real implementation, you would send this data to your server
-            alert(`Payment initiated via ${methodText}. You will receive instructions shortly to complete your purchase.`);
-            
-            // Reset form
-            this.reset();
-            
-            // Hide payment sections
-            document.getElementById('mobilePaymentSection').style.display = 'none';
-            document.getElementById('bankPaymentSection').style.display = 'none';
-            document.getElementById('cardPaymentSection').style.display = 'none';
-            
-            // Remove selected class
-            document.querySelectorAll('.payment-option').forEach(option => {
-                option.classList.remove('selected');
-            });
+
+            const isMobile = selectedMethod.innerHTML.includes('Mobile Money');
+
+            if (isMobile) {
+                const phone = document.getElementById('mobileNumber').value;
+                const firstName = document.getElementById('fullName').value.split(' ')[0];
+                const lastName = document.getElementById('fullName').value.split(' ').slice(1).join(' ');
+                const email = document.getElementById('email').value;
+                const provider = document.getElementById('mobileProvider').value;
+
+                // Show processing overlay
+                const overlay = document.getElementById('paymentOverlay');
+                const overlayTitle = document.getElementById('overlayTitle');
+                const overlayMessage = document.getElementById('overlayMessage');
+                const pinPrompt = document.getElementById('pinPrompt');
+                const promptPhone = document.getElementById('promptPhone');
+                const overlayIcon = document.getElementById('overlayIcon');
+
+                overlay.style.display = 'flex';
+                overlayTitle.textContent = "Processing...";
+                overlayMessage.textContent = "Sending payment request to " + provider.toUpperCase() + "...";
+                pinPrompt.style.display = 'none';
+
+                try {
+                    const response = await fetch('process_payment.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            firstName,
+                            lastName,
+                            email,
+                            phone,
+                            amount: '1280.00',
+                            detail: 'Prime Paints Selection Order',
+                            provider: provider
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === "success" || result.success) {
+                        overlayTitle.textContent = "PIN Prompt Sent!";
+                        overlayMessage.textContent = "We lead the way in payment convenience.";
+                        promptPhone.textContent = phone;
+                        pinPrompt.style.display = 'block';
+                        overlayIcon.innerHTML = '<i class="fas fa-check-circle status-success"></i>';
+                        overlayIcon.classList.remove('fa-spin');
+                        document.getElementById('overlayActions').style.display = 'block';
+                    } else {
+                        throw new Error(result.message || "Failed to initiate payment");
+                    }
+                } catch (error) {
+                    overlayTitle.textContent = "Payment Failed";
+                    overlayMessage.textContent = error.message;
+                    overlayIcon.innerHTML = '<i class="fas fa-times-circle status-error"></i>';
+                    overlayIcon.classList.remove('fa-spin');
+                    document.getElementById('overlayActions').style.display = 'block';
+                }
+            } else {
+                // Handle non-mobile methods (Bank Transfer/Card)
+                const methodText = selectedMethod.querySelector('h3').textContent;
+                alert(`Payment initiated via ${methodText}. Our collectors will contact you shortly.`);
+                this.reset();
+            }
         });
     </script>
 </body>
