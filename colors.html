@@ -17,96 +17,226 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* Premium Color Palette Styles */
+        .palette-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 80px;
+            background: var(--bg-light);
+            z-index: 100;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .color-families {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .family-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eee;
+        }
+
+        .family-btn.active {
+            transform: scale(1.15);
+            border-color: var(--secondary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .family-btn::after {
+            content: attr(data-family);
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .family-btn:hover::after,
+        .family-btn.active::after {
+            opacity: 1;
+            bottom: -30px;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .color-search {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--bg-soft);
+        }
+
+        .color-search:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
         .color-picker {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 2rem;
             margin: 2rem 0;
+            min-height: 400px;
         }
-        
+
         .color-option {
-            height: 120px;
-            border-radius: var(--radius-sm);
+            aspect-ratio: 1/1;
+            height: auto;
+            border-radius: var(--radius-md);
             cursor: pointer;
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
-        }
-        
-        .color-option:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .color-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 0.5rem;
-            font-size: 0.8rem;
-            text-align: center;
-        }
-        
-        .color-brand-selector {
+            background: #fff;
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 2rem 0;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        
-        .brand-btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: var(--radius-md);
-            background: var(--bg-soft);
-            border: 2px solid transparent;
+
+        .color-option:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .color-swatch-fill {
+            flex: 1;
+            width: 100%;
+        }
+
+        .color-info {
+            padding: 1rem;
+            background: white;
+            text-align: left;
+        }
+
+        .color-name {
+            position: static;
+            background: none;
+            color: var(--secondary);
+            padding: 0;
+            font-size: 0.95rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
+            text-align: left;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        
-        .brand-btn.active, .brand-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+
+        .color-hex {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 500;
         }
-        
-        .color-preview {
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
+            color: var(--text-muted);
+            transition: var(--transition);
+            z-index: 2;
         }
-        
-        .selected-color-box {
-            width: 150px;
-            height: 150px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-md);
+
+        .favorite-btn:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: scale(1.1);
         }
-        
+
+        .favorite-btn.active {
+            color: var(--primary);
+        }
+
+        .quick-view-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            background: var(--white);
+            padding: 4rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            margin-top: 3rem;
+            scroll-margin-top: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .quick-view-section {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+                gap: 2rem;
+            }
+
+            .palette-controls {
+                top: 70px;
+            }
+        }
+
         .color-combinations {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1.5rem;
             margin: 2rem 0;
         }
-        
+
         .combination-set {
             border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
-        
+
         .combo-color {
             height: 50px;
         }
-        
+
         .combo-label {
             padding: 0.8rem;
             background: var(--white);
@@ -147,7 +277,8 @@
                 <div class="hero-content">
                     <div class="badge">COLOR COLLECTION</div>
                     <h1>FIND THE PERFECT<br><span>COLOR</span> TO COMPLETELY TRANSFORM ANY ROOM</h1>
-                    <p>Browse our extensive collection of premium colors. Mix and match to create the perfect combination for your space.</p>
+                    <p>Browse our extensive collection of premium colors. Mix and match to create the perfect
+                        combination for your space.</p>
                     <div class="hero-btns">
                         <a href="#color-palette" class="cta-button">Explore Colors</a>
                         <a href="contact.html" class="btn-secondary">Request Samples</a>
@@ -163,23 +294,42 @@
         </div>
     </section>
 
-    <!-- Brand Selector -->
-    <section style="background: var(--bg-soft);">
+    <!-- Brand & Color Controls -->
+    <section style="background: var(--bg-soft); padding-bottom: 0;">
         <div class="container">
-            <div class="section-header">
-                <h2>Select Brand</h2>
-                <p>Choose from our premium paint brands to explore their unique color palettes.</p>
+            <div class="section-header" style="margin-bottom: 3rem;">
+                <h2>Explore the Color Universe</h2>
+                <p>Filter by color family or search for your perfect shade. Every color is mixed with premium Prime
+                    Paints technology for lasting brilliance.</p>
             </div>
 
-            <div class="color-brand-selector">
-                <button class="brand-btn active">DuraCoat Silk</button>
-                <button class="brand-btn">WeatherTex</button>
-                <button class="brand-btn">WallGuard</button>
-                <button class="brand-btn">DuraCoat Sheen</button>
-                <button class="brand-btn">White</button>
-                <button class="brand-btn">Coconut Ice</button>
-                <button class="brand-btn">Roman Plaster</button>
-                <button class="brand-btn">Coffee Cream</button>
+            <div class="palette-controls">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="colorSearch" class="color-search"
+                        placeholder="Search for a color name (e.g. 'Ocean', 'Velvet')...">
+                </div>
+
+                <div class="color-families" id="familyFilters">
+                    <button class="family-btn active" data-family="all" title="All Colors"
+                        style="background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);"><i
+                            class="fas fa-th" style="color: white;"></i></button>
+                    <button class="family-btn" data-family="white" title="Whites" style="background: #ffffff;"></button>
+                    <button class="family-btn" data-family="red" title="Reds" style="background: #D9232D;"></button>
+                    <button class="family-btn" data-family="orange" title="Oranges"
+                        style="background: #ff8c00;"></button>
+                    <button class="family-btn" data-family="yellow" title="Yellows"
+                        style="background: #ffd700;"></button>
+                    <button class="family-btn" data-family="green" title="Greens" style="background: #228b22;"></button>
+                    <button class="family-btn" data-family="blue" title="Blues" style="background: #0000ff;"></button>
+                    <button class="family-btn" data-family="violet" title="Violets"
+                        style="background: #9400d3;"></button>
+                    <button class="family-btn" data-family="neutral" title="Neutrals"
+                        style="background: #d2b48c;"></button>
+                    <button class="family-btn" data-family="favorites" title="My Workspace"
+                        style="background: #f4f7f6;"><i class="fas fa-heart"
+                            style="color: var(--primary);"></i></button>
+                </div>
             </div>
         </div>
     </section>
@@ -192,181 +342,37 @@
                 <p>Our premium silk finish collection with over 200 unique shades.</p>
             </div>
 
-            <div class="color-picker">
-                <div class="color-option" style="background-color: #FFFFFF;" onclick="selectColor('#FFFFFF', 'Pure White')">
-                    <div class="color-name">Pure White</div>
-                </div>
-                <div class="color-option" style="background-color: #F5F5DC;" onclick="selectColor('#F5F5DC', 'Beige')">
-                    <div class="color-name">Beige</div>
-                </div>
-                <div class="color-option" style="background-color: #FAEBD7;" onclick="selectColor('#FAEBD7', 'Antique White')">
-                    <div class="color-name">Antique White</div>
-                </div>
-                <div class="color-option" style="background-color: #FFEBCD;" onclick="selectColor('#FFEBCD', 'Blanched Almond')">
-                    <div class="color-name">Blanched Almond</div>
-                </div>
-                <div class="color-option" style="background-color: #FFF8DC;" onclick="selectColor('#FFF8DC', 'Cornsilk')">
-                    <div class="color-name">Cornsilk</div>
-                </div>
-                <div class="color-option" style="background-color: #FDF5E6;" onclick="selectColor('#FDF5E6', 'Old Lace')">
-                    <div class="color-name">Old Lace</div>
-                </div>
-                <div class="color-option" style="background-color: #F5DEB3;" onclick="selectColor('#F5DEB3', 'Wheat')">
-                    <div class="color-name">Wheat</div>
-                </div>
-                <div class="color-option" style="background-color: #DEB887;" onclick="selectColor('#DEB887', 'Burly Wood')">
-                    <div class="color-name">Burly Wood</div>
-                </div>
-                <div class="color-option" style="background-color: #D2B48C;" onclick="selectColor('#D2B48C', 'Tan')">
-                    <div class="color-name">Tan</div>
-                </div>
-                <div class="color-option" style="background-color: #BC8F8F;" onclick="selectColor('#BC8F8F', 'Rosy Brown')">
-                    <div class="color-name">Rosy Brown</div>
-                </div>
-                <div class="color-option" style="background-color: #F4A460;" onclick="selectColor('#F4A460', 'Sandy Brown')">
-                    <div class="color-name">Sandy Brown</div>
-                </div>
-                <div class="color-option" style="background-color: #DAA520;" onclick="selectColor('#DAA520', 'Golden Rod')">
-                    <div class="color-name">Golden Rod</div>
-                </div>
-                <div class="color-option" style="background-color: #B8860B;" onclick="selectColor('#B8860B', 'Dark Golden Rod')">
-                    <div class="color-name">Dark Golden Rod</div>
-                </div>
-                <div class="color-option" style="background-color: #CD853F;" onclick="selectColor('#CD853F', 'Peru')">
-                    <div class="color-name">Peru</div>
-                </div>
-                <div class="color-option" style="background-color: #D2691E;" onclick="selectColor('#D2691E', 'Chocolate')">
-                    <div class="color-name">Chocolate</div>
-                </div>
-                <div class="color-option" style="background-color: #8B4513;" onclick="selectColor('#8B4513', 'Saddle Brown')">
-                    <div class="color-name">Saddle Brown</div>
-                </div>
-                <div class="color-option" style="background-color: #A0522D;" onclick="selectColor('#A0522D', 'Sienna')">
-                    <div class="color-name">Sienna</div>
-                </div>
-                <div class="color-option" style="background-color: #800000;" onclick="selectColor('#800000', 'Maroon')">
-                    <div class="color-name">Maroon</div>
-                </div>
-                <div class="color-option" style="background-color: #DC143C;" onclick="selectColor('#DC143C', 'Crimson')">
-                    <div class="color-name">Crimson</div>
-                </div>
-                <div class="color-option" style="background-color: #B22222;" onclick="selectColor('#B22222', 'Fire Brick')">
-                    <div class="color-name">Fire Brick</div>
-                </div>
-                <div class="color-option" style="background-color: #FF0000;" onclick="selectColor('#FF0000', 'Red')">
-                    <div class="color-name">Red</div>
-                </div>
-                <div class="color-option" style="background-color: #FF4500;" onclick="selectColor('#FF4500', 'Orange Red')">
-                    <div class="color-name">Orange Red</div>
-                </div>
-                <div class="color-option" style="background-color: #FF6347;" onclick="selectColor('#FF6347', 'Tomato')">
-                    <div class="color-name">Tomato</div>
-                </div>
-                <div class="color-option" style="background-color: #FF8C00;" onclick="selectColor('#FF8C00', 'Dark Orange')">
-                    <div class="color-name">Dark Orange</div>
-                </div>
-                <div class="color-option" style="background-color: #FFA500;" onclick="selectColor('#FFA500', 'Orange')">
-                    <div class="color-name">Orange</div>
-                </div>
-                <div class="color-option" style="background-color: #FFD700;" onclick="selectColor('#FFD700', 'Gold')">
-                    <div class="color-name">Gold</div>
-                </div>
-                <div class="color-option" style="background-color: #FFFF00;" onclick="selectColor('#FFFF00', 'Yellow')">
-                    <div class="color-name">Yellow</div>
-                </div>
-                <div class="color-option" style="background-color: #FFFFE0;" onclick="selectColor('#FFFFE0', 'Light Yellow')">
-                    <div class="color-name">Light Yellow</div>
-                </div>
-                <div class="color-option" style="background-color: #F0E68C;" onclick="selectColor('#F0E68C', 'Khaki')">
-                    <div class="color-name">Khaki</div>
-                </div>
-                <div class="color-option" style="background-color: #EEE8AA;" onclick="selectColor('#EEE8AA', 'Pale Golden Rod')">
-                    <div class="color-name">Pale Golden Rod</div>
-                </div>
-                <div class="color-option" style="background-color: #9ACD32;" onclick="selectColor('#9ACD32', 'Yellow Green')">
-                    <div class="color-name">Yellow Green</div>
-                </div>
-                <div class="color-option" style="background-color: #90EE90;" onclick="selectColor('#90EE90', 'Light Green')">
-                    <div class="color-name">Light Green</div>
-                </div>
-                <div class="color-option" style="background-color: #32CD32;" onclick="selectColor('#32CD32', 'Lime Green')">
-                    <div class="color-name">Lime Green</div>
-                </div>
-                <div class="color-option" style="background-color: #00FF00;" onclick="selectColor('#00FF00', 'Lime')">
-                    <div class="color-name">Lime</div>
-                </div>
-                <div class="color-option" style="background-color: #228B22;" onclick="selectColor('#228B22', 'Forest Green')">
-                    <div class="color-name">Forest Green</div>
-                </div>
-                <div class="color-option" style="background-color: #006400;" onclick="selectColor('#006400', 'Dark Green')">
-                    <div class="color-name">Dark Green</div>
-                </div>
-                <div class="color-option" style="background-color: #008080;" onclick="selectColor('#008080', 'Teal')">
-                    <div class="color-name">Teal</div>
-                </div>
-                <div class="color-option" style="background-color: #008B8B;" onclick="selectColor('#008B8B', 'Dark Cyan')">
-                    <div class="color-name">Dark Cyan</div>
-                </div>
-                <div class="color-option" style="background-color: #00BFFF;" onclick="selectColor('#00BFFF', 'Deep Sky Blue')">
-                    <div class="color-name">Deep Sky Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #87CEEB;" onclick="selectColor('#87CEEB', 'Sky Blue')">
-                    <div class="color-name">Sky Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #87CEFA;" onclick="selectColor('#87CEFA', 'Light Sky Blue')">
-                    <div class="color-name">Light Sky Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #4682B4;" onclick="selectColor('#4682B4', 'Steel Blue')">
-                    <div class="color-name">Steel Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #4169E1;" onclick="selectColor('#4169E1', 'Royal Blue')">
-                    <div class="color-name">Royal Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #0000FF;" onclick="selectColor('#0000FF', 'Blue')">
-                    <div class="color-name">Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #00008B;" onclick="selectColor('#00008B', 'Dark Blue')">
-                    <div class="color-name">Dark Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #191970;" onclick="selectColor('#191970', 'Midnight Blue')">
-                    <div class="color-name">Midnight Blue</div>
-                </div>
-                <div class="color-option" style="background-color: #8A2BE2;" onclick="selectColor('#8A2BE2', 'Blue Violet')">
-                    <div class="color-name">Blue Violet</div>
-                </div>
-                <div class="color-option" style="background-color: #9400D3;" onclick="selectColor('#9400D3', 'Violet')">
-                    <div class="color-name">Violet</div>
-                </div>
-                <div class="color-option" style="background-color: #8B008B;" onclick="selectColor('#8B008B', 'Dark Magenta')">
-                    <div class="color-name">Dark Magenta</div>
-                </div>
-                <div class="color-option" style="background-color: #DA70D6;" onclick="selectColor('#DA70D6', 'Orchid')">
-                    <div class="color-name">Orchid</div>
-                </div>
-                <div class="color-option" style="background-color: #FF69B4;" onclick="selectColor('#FF69B4', 'Hot Pink')">
-                    <div class="color-name">Hot Pink</div>
-                </div>
-                <div class="color-option" style="background-color: #FF1493;" onclick="selectColor('#FF1493', 'Deep Pink')">
-                    <div class="color-name">Deep Pink</div>
+            <div class="color-picker" id="colorPickerGrid">
+                <!-- Colors will be dynamically injected here -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                    <p style="margin-top: 1rem;">Loading curated colors...</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Selected Color Preview -->
-    <section style="background: var(--bg-soft);">
+    <!-- Selected Color Preview (Quick View) -->
+    <section id="selected-color-preview" style="background: var(--bg-soft); border-top: 1px solid rgba(0,0,0,0.05);">
         <div class="container">
-            <div class="section-header">
-                <h2>Your Selected Color</h2>
-                <p>Preview your chosen color and see complementary options.</p>
-            </div>
-
-            <div class="color-preview">
-                <div class="selected-color-box" id="selectedColorBox" style="background-color: #D9232D;"></div>
-                <div style="text-align: center;">
-                    <h3 id="selectedColorName" style="margin-bottom: 1rem;">Classic Red</h3>
-                    <p id="selectedColorCode">#D9232D</p>
-                    <button class="cta-button" style="margin-top: 1rem;" onclick="requestSample()">Request Sample</button>
+            <div id="quickViewContainer" class="quick-view-section reveal">
+                <div class="hero-visual">
+                    <div class="selected-color-box" id="selectedColorBox"
+                        style="background-color: #D9232D; width: 100%; height: 400px; border-radius: var(--radius-md);">
+                    </div>
+                </div>
+                <div class="hero-content">
+                    <div class="badge" id="selectedColorFamily">RED FAMILY</div>
+                    <h2 id="selectedColorName" style="font-size: 3rem; margin-bottom: 1rem;">Classic Red</h2>
+                    <p id="selectedColorCode" style="font-size: 1.5rem; color: var(--text-muted); margin-bottom: 2rem;">
+                        HEX: #D9232D</p>
+                    <p style="margin-bottom: 2rem;">A timeless, vibrant red that brings energy and warmth to any room.
+                        Perfect for accent walls or bold furniture transformations.</p>
+                    <div class="hero-btns">
+                        <button class="cta-button" onclick="requestSample()">Order a Tester</button>
+                        <button class="btn-secondary" id="toggleFavoriteMain"><i class="far fa-heart"></i> Add to
+                            Workspace</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -387,35 +393,35 @@
                     <div class="combo-color" style="background: #8B4513;"></div>
                     <div class="combo-label">Warm Neutrals</div>
                 </div>
-                
+
                 <div class="combination-set">
                     <div class="combo-color" style="background: #E6E6FA;"></div>
                     <div class="combo-color" style="background: #DDA0DD;"></div>
                     <div class="combo-color" style="background: #BA55D3;"></div>
                     <div class="combo-label">Soft Pastels</div>
                 </div>
-                
+
                 <div class="combination-set">
                     <div class="combo-color" style="background: #7FFFD4;"></div>
                     <div class="combo-color" style="background: #20B2AA;"></div>
                     <div class="combo-color" style="background: #4682B4;"></div>
                     <div class="combo-label">Ocean Breeze</div>
                 </div>
-                
+
                 <div class="combination-set">
                     <div class="combo-color" style="background: #F0E68C;"></div>
                     <div class="combo-color" style="background: #FFD700;"></div>
                     <div class="combo-color" style="background: #FF8C00;"></div>
                     <div class="combo-label">Sunset Glow</div>
                 </div>
-                
+
                 <div class="combination-set">
                     <div class="combo-color" style="background: #D8BFD8;"></div>
                     <div class="combo-color" style="background: #9370DB;"></div>
                     <div class="combo-color" style="background: #4169E1;"></div>
                     <div class="combo-label">Lavender Dreams</div>
                 </div>
-                
+
                 <div class="combination-set">
                     <div class="combo-color" style="background: #90EE90;"></div>
                     <div class="combo-color" style="background: #32CD32;"></div>
@@ -476,10 +482,14 @@
             <div class="hero-grid">
                 <div class="hero-content">
                     <h3 style="font-size: 2.5rem; margin-bottom: 2rem;">Unleash Your Inner Painting Pro</h3>
-                    <p>Confused about which paint colors to use for your upcoming project? Let our expert consultants guide you. At Prime Paints, we offer personalized consultancy services to help you choose the right colors based on your specific needs and preferences.</p>
+                    <p>Confused about which paint colors to use for your upcoming project? Let our expert consultants
+                        guide you. At Prime Paints, we offer personalized consultancy services to help you choose the
+                        right colors based on your specific needs and preferences.</p>
                     <ul style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Personal color consultations</li>
-                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Room-specific recommendations</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Personal color
+                            consultations</li>
+                        <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Room-specific
+                            recommendations</li>
                         <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Lighting analysis</li>
                         <li><i class="fas fa-check-circle" style="color: var(--primary);"></i> Trend forecasting</li>
                     </ul>
@@ -499,15 +509,19 @@
     </section>
 
     <!-- CTA Section -->
-    <section style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
+    <section
+        style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 80px 0;">
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
                     <h2 style="color: white;">Ready to Transform Your Space?</h2>
-                    <p>Visit one of our stores to see our colors in person, or order samples online. Our color experts are ready to help you find the perfect shade.</p>
+                    <p>Visit one of our stores to see our colors in person, or order samples online. Our color experts
+                        are ready to help you find the perfect shade.</p>
                     <div class="hero-btns">
-                        <a href="products.html" class="cta-button" style="background: var(--white); color: var(--primary);">Shop Colors</a>
-                        <a href="contact.html" class="btn-secondary" style="border-color: white; color: white;">Find Store</a>
+                        <a href="products.html" class="cta-button"
+                            style="background: var(--white); color: var(--primary);">Shop Colors</a>
+                        <a href="contact.html" class="btn-secondary" style="border-color: white; color: white;">Find
+                            Store</a>
                     </div>
                 </div>
                 <div class="hero-visual">
@@ -568,7 +582,8 @@
                 </div>
             </div>
             <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 0.9rem;">
-                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.</p>
+                <p>&copy; 2026 Prime Paints Zambia. All rights reserved. Designed and Developed by Euphemia Chikungulu.
+                </p>
             </div>
         </div>
     </footer>
@@ -576,31 +591,194 @@
     <!-- Footer Scripts -->
     <script src="main.js"></script>
     <script>
-        // Color selection functionality
-        function selectColor(color, name) {
-            document.getElementById('selectedColorBox').style.backgroundColor = color;
-            document.getElementById('selectedColorName').textContent = name;
-            document.getElementById('selectedColorCode').textContent = color;
+        // Color Data - Curated Premium Collection
+        const colorData = [
+            // WHITES
+            { name: "Pure White", hex: "#FFFFFF", family: "white", description: "A clean, crisp white that provides a perfect blank canvas for any modern interior." },
+            { name: "Antique White", hex: "#FAEBD7", family: "white", description: "A soft, creamy white that adds a touch of traditional elegance and warmth." },
+            { name: "Pearl Frost", hex: "#F0F4F7", family: "white", description: "A cool, sophisticated white with subtle grey undertones, perfect for airy spaces." },
+            { name: "Cotton Bale", hex: "#FAF8F2", family: "white", description: "A natural, warm white inspired by raw cotton, creating a cozy and inviting atmosphere." },
+            { name: "White Mist", hex: "#F2F3F4", family: "white", description: "A light, ethereal white that brings a sense of serenity and openness to any room." },
+
+            // REDS
+            { name: "Classic Red", hex: "#D9232D", family: "red", description: "Our signature vibrant red, designed to make a bold statement and energize your space." },
+            { name: "Crimson Tide", hex: "#DC143C", family: "red", description: "A deep, passionate red that exudes confidence and luxury." },
+            { name: "Velvet Merlot", hex: "#7E191B", family: "red", description: "A rich, sophisticated dark red inspired by fine wine and velvet textures." },
+            { name: "Sunset Ember", hex: "#FF4500", family: "red", description: "A fiery orange-red that captures the warmth and drama of a setting sun." },
+            { name: "Cherry Bloom", hex: "#DE3163", family: "red", description: "A playful yet sophisticated pinkish-red that brings a fresh, floral feel." },
+
+            // ORANGES
+            { name: "Burnt Orange", hex: "#CC5500", family: "orange", description: "An earthy, grounded orange that adds character and warmth without being overwhelming." },
+            { name: "Golden Apricot", hex: "#FBCEB1", family: "orange", description: "A soft, sun-kissed orange that feels light, airy, and optimistic." },
+            { name: "Copper Glow", hex: "#B87333", family: "orange", description: "A metallic-inspired orange that brings a touch of industrial-chic to your home." },
+            { name: "Zest Peach", hex: "#FFDAB9", family: "orange", description: "A sweet, fruity orange that is perfect for kitchens and breakfast nooks." },
+            { name: "Harvest Gold", hex: "#DAA520", family: "orange", description: "A deep, autumnal gold-orange that reflects the richness of a bountiful harvest." },
+
+            // YELLOWS
+            { name: "Sunray", hex: "#FFD700", family: "yellow", description: "A bright, cheerful yellow that brings the joy of sunshine indoors." },
+            { name: "Lemon Sorbet", hex: "#FFFACD", family: "yellow", description: "A light, refreshing yellow that cleanses the visual palette and adds brightness." },
+            { name: "Ochre Earth", hex: "#CC7722", family: "yellow", description: "A traditional, pigment-rich yellow that feels grounded and historic." },
+            { name: "Buttercup", hex: "#F3E5AB", family: "yellow", description: "A soft, creamy yellow that is gentle on the eyes and perfect for bedrooms." },
+            { name: "Morning Glow", hex: "#FFEC8B", family: "yellow", description: "A pale, luminous yellow that mimics the first light of a beautiful day." },
+
+            // GREENS
+            { name: "Forest Canopy", hex: "#228B22", family: "green", description: "A deep, lush green that connects your interior directly with the beauty of nature." },
+            { name: "Sage Garden", hex: "#BCB88A", family: "green", description: "A muted, sophisticated green that brings a calm and peaceful vibe." },
+            { name: "Emerald Isle", hex: "#50C878", family: "green", description: "A precious, jewel-toned green that adds a touch of royal luxury." },
+            { name: "Mint Crisp", hex: "#98FF98", family: "green", description: "A fresh, revitalizing green that is perfect for bathrooms and laundry rooms." },
+            { name: "Olive Branch", hex: "#808000", family: "green", description: "A classic, earthy green that pairs beautifully with natural wood and stone." },
+
+            // BLUES
+            { name: "Royal Sapphire", hex: "#002366", family: "blue", description: "A deep, commanding blue that brings authority and timeless beauty." },
+            { name: "Ocean Breeze", hex: "#0077BE", family: "blue", description: "A vibrant, mid-toned blue that evokes the spirit of the open sea." },
+            { name: "Sky Clarity", hex: "#87CEEB", family: "blue", description: "A light, peaceful blue that makes ceilings feel higher and rooms larger." },
+            { name: "Midnight Depth", hex: "#191970", family: "blue", description: "A mysterious, near-black blue perfect for dramatic accents and media rooms." },
+            { name: "Arctic Ice", hex: "#C6E2FF", family: "blue", description: "A pale, cool blue that feels refreshing and modern." },
+
+            // VIOLETS
+            { name: "Lavender Dream", hex: "#E6E6FA", family: "violet", description: "A soft, floral violet that promotes relaxation and restful sleep." },
+            { name: "Royal Purple", hex: "#7851A9", family: "violet", description: "A majestic, deep purple that makes any room feel like a palace." },
+            { name: "Amethyst Sky", hex: "#9966CC", family: "violet", description: "A spiritual, balanced violet that inspires creativity and thought." },
+            { name: "Plum Luxe", hex: "#8E4585", family: "violet", description: "A rich, sophisticated purple with warm undertones, perfect for dining rooms." },
+            { name: "Violet Mist", hex: "#DCD0FF", family: "violet", description: "A delicate, ethereal purple that adds a subtle hint of color." },
+
+            // NEUTRALS
+            { name: "Warm Taupe", hex: "#B38B6D", family: "neutral", description: "The ultimate versatile neutral, bridging the gap between grey and brown." },
+            { name: "Stone Grey", hex: "#928E85", family: "neutral", description: "A modern, urban grey inspired by smooth river stones and city architecture." },
+            { name: "Sahara Sand", hex: "#F4A460", family: "neutral", description: "A warm, textured neutral that brings a sense of desert adventure." },
+            { name: "Pebble Path", hex: "#D3D3D3", family: "neutral", description: "A light, clean grey that goes with everything and never goes out of style." },
+            { name: "Coffee Cream", hex: "#D2B48C", family: "neutral", description: "A rich, creamy neutral that is as comforting as your favorite morning brew." }
+        ];
+
+        let favorites = JSON.parse(localStorage.getItem('premiumColorsFavorites') || '[]');
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // DOM Elements
+        const colorPickerGrid = document.getElementById('colorPickerGrid');
+        const familyBtns = document.querySelectorAll('.family-btn');
+        const colorSearch = document.getElementById('colorSearch');
+        const selectedColorBox = document.getElementById('selectedColorBox');
+        const selectedColorName = document.getElementById('selectedColorName');
+        const selectedColorCode = document.getElementById('selectedColorCode');
+        const selectedColorFamily = document.getElementById('selectedColorFamily');
+        const selectedColorDesc = document.querySelector('.hero-content p:nth-of-type(2)');
+        const toggleFavoriteMain = document.getElementById('toggleFavoriteMain');
+        const quickView = document.getElementById('quickViewContainer');
+
+        // Functions
+        function init() {
+            renderColors();
+            setupEventListeners();
         }
 
-        // Brand selector functionality
-        document.querySelectorAll('.brand-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.brand-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                this.classList.add('active');
-                
-                // In a real implementation, you would load the color palette for the selected brand
-                console.log('Selected brand:', this.textContent);
+        function renderColors() {
+            let filtered = colorData.filter(color => {
+                const matchesFamily = currentFilter === 'all' || color.family === currentFilter;
+                const matchesSearch = color.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    color.hex.toLowerCase().includes(searchQuery.toLowerCase());
+
+                if (currentFilter === 'favorites') {
+                    return favorites.includes(color.hex) && matchesSearch;
+                }
+
+                return matchesFamily && matchesSearch;
             });
-        });
 
-        // Request sample functionality
-        function requestSample() {
-            const colorName = document.getElementById('selectedColorName').textContent;
-            alert(`Sample request for "${colorName}" has been submitted. We'll contact you shortly to arrange delivery.`);
+            if (filtered.length === 0) {
+                colorPickerGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 5rem;">
+                        <i class="fas fa-search-minus" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                        <p>No colors found matching your criteria. Try another search or filter.</p>
+                        ${currentFilter === 'favorites' ? '<p style="margin-top:0.5rem; font-size:0.9rem;">Add some colors to your workspace to see them here!</p>' : ''}
+                    </div>
+                `;
+                return;
+            }
+
+            colorPickerGrid.innerHTML = filtered.map(color => {
+                const isFav = favorites.includes(color.hex);
+                return `
+                    <div class="color-option reveal active" onclick="selectColor('${color.hex}', '${color.name}', '${color.family}', '${color.description.replace(/'/g, "\\'")}')">
+                        <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(event, '${color.hex}')">
+                            <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                        <div class="color-swatch-fill" style="background-color: ${color.hex};"></div>
+                        <div class="color-info">
+                            <div class="color-name">${color.name}</div>
+                            <div class="color-hex">${color.hex}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
+
+        function selectColor(hex, name, family, description) {
+            // Update UI
+            selectedColorBox.style.backgroundColor = hex;
+            selectedColorName.textContent = name;
+            selectedColorCode.textContent = `HEX: ${hex}`;
+            selectedColorFamily.textContent = `${family.toUpperCase()} FAMILY`;
+            selectedColorDesc.textContent = description;
+
+            // Update Favorite Button in Detail View
+            const isFav = favorites.includes(hex);
+            toggleFavoriteMain.innerHTML = `<i class="${isFav ? 'fas' : 'far'} fa-heart"></i> ${isFav ? 'In Workspace' : 'Add to Workspace'}`;
+            toggleFavoriteMain.setAttribute('onclick', `toggleFavorite(null, '${hex}', true)`);
+
+            // Scroll to preview
+            document.getElementById('selected-color-preview').scrollIntoView({ behavior: 'smooth' });
+
+            // Animation trigger
+            quickView.classList.remove('active');
+            setTimeout(() => {
+                quickView.classList.add('active');
+            }, 100);
+        }
+
+        function toggleFavorite(event, hex, isFromMain = false) {
+            if (event) event.stopPropagation();
+
+            const index = favorites.indexOf(hex);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(hex);
+            }
+
+            localStorage.setItem('premiumColorsFavorites', JSON.stringify(favorites));
+
+            if (isFromMain) {
+                const color = colorData.find(c => c.hex === hex);
+                selectColor(hex, color.name, color.family);
+            }
+
+            renderColors();
+        }
+
+        function setupEventListeners() {
+            familyBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    familyBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.getAttribute('data-family');
+                    renderColors();
+                });
+            });
+
+            colorSearch.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderColors();
+            });
+        }
+
+        function requestSample() {
+            const colorName = selectedColorName.textContent;
+            alert(`A premium tester of "${colorName}" has been added to your cart. We lead the way in color convenience!`);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 
