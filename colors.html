@@ -161,11 +161,18 @@
             text-overflow: ellipsis;
         }
 
-        .color-hex {
+        .color-hex,
+        .color-code {
             font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
             font-weight: 500;
+        }
+
+        .color-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .favorite-btn {
@@ -329,6 +336,8 @@
                     <button class="family-btn" data-family="favorites" title="My Workspace"
                         style="background: #f4f7f6;"><i class="fas fa-heart"
                             style="color: var(--primary);"></i></button>
+                    <button class="family-btn" data-family="trending" title="Trending Colors"
+                        style="background: #2D3436;"><i class="fas fa-fire" style="color: #FF8C00;"></i></button>
                 </div>
             </div>
         </div>
@@ -357,17 +366,48 @@
         <div class="container">
             <div id="quickViewContainer" class="quick-view-section reveal">
                 <div class="hero-visual">
-                    <div class="selected-color-box" id="selectedColorBox"
-                        style="background-color: #D9232D; width: 100%; height: 400px; border-radius: var(--radius-md);">
+                    <div class="selected-color-box-container"
+                        style="position: relative; overflow: hidden; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+                        <img id="roomVisualizerImg"
+                            src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=2070"
+                            alt="Room Visualizer"
+                            style="width: 100%; height: 500px; object-fit: cover; transition: var(--transition);">
+                        <div id="selectedColorOverlay"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--primary); opacity: 0.2; pointer-events: none; mix-blend-mode: multiply; transition: var(--transition);">
+                        </div>
+                        <div
+                            style="position: absolute; bottom: 20px; left: 20px; background: var(--white); padding: 1rem; border-radius: var(--radius-sm); box-shadow: var(--shadow-md);">
+                            <div id="selectedColorSwatch"
+                                style="width: 50px; height: 50px; background: var(--primary); border-radius: 50%; margin-bottom: 0.5rem;">
+                            </div>
+                            <p id="selectedColorLabel" style="font-weight: 700; margin: 0;">Classic Red</p>
+                            <p id="selectedColorHexLabel"
+                                style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">#D9232D</p>
+                        </div>
                     </div>
                 </div>
                 <div class="hero-content">
                     <div class="badge" id="selectedColorFamily">RED FAMILY</div>
                     <h2 id="selectedColorName" style="font-size: 3rem; margin-bottom: 1rem;">Classic Red</h2>
-                    <p id="selectedColorCode" style="font-size: 1.5rem; color: var(--text-muted); margin-bottom: 2rem;">
-                        HEX: #D9232D</p>
-                    <p style="margin-bottom: 2rem;">A timeless, vibrant red that brings energy and warmth to any room.
-                        Perfect for accent walls or bold furniture transformations.</p>
+                    <p style="margin-bottom: 2rem;" id="selectedColorDesc">A timeless, vibrant red that brings energy
+                        and warmth to any room. Perfect for accent walls or bold furniture transformations.</p>
+
+                    <div class="palette-explorer" style="margin-bottom: 2rem;">
+                        <div class="palette-tabs"
+                            style="display: flex; gap: 2rem; border-bottom: 2px solid rgba(0,0,0,0.05); margin-bottom: 1.5rem;">
+                            <button class="palette-tab active" data-tab="tonal"
+                                style="background: none; border: none; padding: 0.8rem 0; font-weight: 700; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: var(--transition);">Tonal</button>
+                            <button class="palette-tab" data-tab="harmonising"
+                                style="background: none; border: none; padding: 0.8rem 0; font-weight: 700; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: var(--transition);">Harmonising</button>
+                            <button class="palette-tab" data-tab="designer"
+                                style="background: none; border: none; padding: 0.8rem 0; font-weight: 700; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: var(--transition);">Designer's
+                                Choice</button>
+                        </div>
+                        <div id="paletteSwatches" style="display: flex; gap: 1.5rem; min-height: 80px;">
+                            <!-- Swatches injected by JS -->
+                        </div>
+                    </div>
+
                     <div class="hero-btns">
                         <button class="cta-button" onclick="requestSample()">Order a Tester</button>
                         <button class="btn-secondary" id="toggleFavoriteMain"><i class="far fa-heart"></i> Add to
@@ -591,63 +631,86 @@
     <!-- Footer Scripts -->
     <script src="main.js"></script>
     <script>
-        // Color Data - Curated Premium Collection
+        // Color Data - Curated Premium Collection with Palettes and Roomsets
         const colorData = [
-            // WHITES
-            { name: "Pure White", hex: "#FFFFFF", family: "white", description: "A clean, crisp white that provides a perfect blank canvas for any modern interior." },
-            { name: "Antique White", hex: "#FAEBD7", family: "white", description: "A soft, creamy white that adds a touch of traditional elegance and warmth." },
-            { name: "Pearl Frost", hex: "#F0F4F7", family: "white", description: "A cool, sophisticated white with subtle grey undertones, perfect for airy spaces." },
-            { name: "Cotton Bale", hex: "#FAF8F2", family: "white", description: "A natural, warm white inspired by raw cotton, creating a cozy and inviting atmosphere." },
-            { name: "White Mist", hex: "#F2F3F4", family: "white", description: "A light, ethereal white that brings a sense of serenity and openness to any room." },
+            // WHITES & OFF-WHITES
+            { name: "Pure White", hex: "#FFFFFF", code: "WH01", family: "white", description: "A clean, crisp white providing a perfect blank canvas.", palettes: { tonal: ["#F5F5F5", "#E0E0E0", "#BDBDBD"], harmonising: ["#F0F4F7", "#CFD8DC", "#90A4AE"], designer: ["#002366", "#D9232D", "#212121"] }, roomsets: ["https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=2069"] },
+            { name: "Antique White", hex: "#FAEBD7", code: "WH02", family: "white", description: "A soft, creamy white that adds traditional elegance.", palettes: { tonal: ["#FDF5E6", "#FAF0E6", "#FAEBD7"], harmonising: ["#F5F5DC", "#D2B48C", "#E6D5B8"], designer: ["#8B4513", "#5D4037", "#2E1A16"] }, roomsets: ["https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=2069"] },
+            { name: "Cotton Blossom", hex: "#F8F8FF", code: "WH03", family: "white", description: "Delicate and airy, like fresh cotton in the morning sun.", palettes: { tonal: ["#F0F8FF", "#F5F5F5", "#FFFFFF"], harmonising: ["#E1F5FE", "#E0F2F1", "#F1F8E9"], designer: ["#607D8B", "#455A64", "#263238"] }, roomsets: ["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Pearl Frost", hex: "#F0F4F7", code: "WH04", family: "white", description: "A cool white with subtle grey undertones.", palettes: { tonal: ["#E1E8ED", "#D1D9E0", "#BCC5CE"], harmonising: ["#B0BEC5", "#90A4AE", "#78909C"], designer: ["#263238", "#37474F", "#455A64"] }, roomsets: ["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Alabaster Beam", hex: "#F2F0E6", code: "WH05", family: "white", description: "A warm, architectural white that softens harsh lighting.", palettes: { tonal: ["#EBE8DB", "#DEDAC9", "#CFCAAF"], harmonising: ["#D2B48C", "#BCAA91", "#A89A7B"], designer: ["#191C20", "#2D3436", "#636E72"] }, roomsets: ["https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=2069"] },
 
-            // REDS
-            { name: "Classic Red", hex: "#D9232D", family: "red", description: "Our signature vibrant red, designed to make a bold statement and energize your space." },
-            { name: "Crimson Tide", hex: "#DC143C", family: "red", description: "A deep, passionate red that exudes confidence and luxury." },
-            { name: "Velvet Merlot", hex: "#7E191B", family: "red", description: "A rich, sophisticated dark red inspired by fine wine and velvet textures." },
-            { name: "Sunset Ember", hex: "#FF4500", family: "red", description: "A fiery orange-red that captures the warmth and drama of a setting sun." },
-            { name: "Cherry Bloom", hex: "#DE3163", family: "red", description: "A playful yet sophisticated pinkish-red that brings a fresh, floral feel." },
+            // REDS & PINKS
+            { name: "Classic Red", hex: "#D9232D", code: "RD01", family: "red", description: "Our signature vibrant red, making a bold statement.", palettes: { tonal: ["#B71C1C", "#C62828", "#D32F2F"], harmonising: ["#FF5252", "#FF1744", "#D50000"], designer: ["#FFFFFF", "#000000", "#FFD700"] }, roomsets: ["https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Crimson Tide", hex: "#DC143C", code: "RD02", family: "red", description: "A deep, passionate red that exudes luxury.", palettes: { tonal: ["#C62828", "#AD1457", "#880E4F"], harmonising: ["#7E191B", "#5C1214", "#3D0C0E"], designer: ["#F5F5DC", "#D2B48C", "#8B4513"] }, roomsets: ["https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Velvet Merlot", hex: "#7E191B", code: "RD03", family: "red", description: "A rich, sophisticated dark red inspired by fine wine.", palettes: { tonal: ["#5C1214", "#4A0E10", "#380B0C"], harmonising: ["#3E2723", "#21100D", "#000000"], designer: ["#FFD700", "#C0C0C0", "#E5E4E2"] }, roomsets: ["https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Desert Rose", hex: "#E9967A", code: "RD04", family: "red", description: "A soft, earthy pink that brings warmth and comfort.", palettes: { tonal: ["#D8846B", "#C7725C", "#B6604D"], harmonising: ["#BC8F8F", "#A0522D", "#8B4513"], designer: ["#F5F5F5", "#808080", "#2F4F4F"] }, roomsets: ["https://images.unsplash.com/photo-1616486341352-7edec6090c24?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Scarlet Ember", hex: "#FF2400", code: "RD05", family: "red", description: "A fiery, intense red for high-energy accent walls.", palettes: { tonal: ["#E02000", "#C01C00", "#A01800"], harmonising: ["#FF8C00", "#FF4500", "#B22222"], designer: ["#FFFFFF", "#BDBDBD", "#1A1A1B"] }, roomsets: ["https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Petal Soft", hex: "#FFC0CB", code: "RD06", family: "red", description: "A gentle pink for nursery spaces and soft bedrooms.", palettes: { tonal: ["#FFB6C1", "#FF69B4", "#FF1493"], harmonising: ["#E6E6FA", "#D8BFD8", "#DDA0DD"], designer: ["#FFFFFF", "#F5F5DC", "#808080"] }, roomsets: ["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=2070"] },
 
-            // ORANGES
-            { name: "Burnt Orange", hex: "#CC5500", family: "orange", description: "An earthy, grounded orange that adds character and warmth without being overwhelming." },
-            { name: "Golden Apricot", hex: "#FBCEB1", family: "orange", description: "A soft, sun-kissed orange that feels light, airy, and optimistic." },
-            { name: "Copper Glow", hex: "#B87333", family: "orange", description: "A metallic-inspired orange that brings a touch of industrial-chic to your home." },
-            { name: "Zest Peach", hex: "#FFDAB9", family: "orange", description: "A sweet, fruity orange that is perfect for kitchens and breakfast nooks." },
-            { name: "Harvest Gold", hex: "#DAA520", family: "orange", description: "A deep, autumnal gold-orange that reflects the richness of a bountiful harvest." },
+            // ORANGES & TERRAS
+            { name: "Burnt Orange", hex: "#CC5500", code: "OR01", family: "orange", description: "An earthy, grounded orange adding character.", palettes: { tonal: ["#B34A00", "#994000", "#803500"], harmonising: ["#D2691E", "#A0522D", "#8B4513"], designer: ["#F5F5DC", "#556B2F", "#2F4F4F"] }, roomsets: ["https://images.unsplash.com/photo-1616486341352-7edec6090c24?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Golden Apricot", hex: "#FBCEB1", code: "OR02", family: "orange", description: "A soft, sun-kissed orange that feels light and airy.", palettes: { tonal: ["#F9BC94", "#F7AB77", "#F59A5A"], harmonising: ["#FAEBD7", "#F5F5DC", "#FFE4B5"], designer: ["#0077BE", "#002366", "#1A1A1B"] }, roomsets: ["https://images.unsplash.com/photo-1616486341352-7edec6090c24?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Copper Ore", hex: "#B87333", code: "OR03", family: "orange", description: "A metallic-toned orange that adds a rustic, industrial feel.", palettes: { tonal: ["#A05E2A", "#884921", "#703418"], harmonising: ["#8B4513", "#5C4033", "#3B2F2F"], designer: ["#212121", "#424242", "#E0E0E0"] }, roomsets: ["https://images.unsplash.com/photo-1616486341352-7edec6090c24?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Peach Fuzz", hex: "#FFDAB9", code: "OR04", family: "orange", description: "A warm, delicate peach that brightens small spaces.", palettes: { tonal: ["#FFCC99", "#FFB266", "#FF9933"], harmonising: ["#FFF5EE", "#FAF0E6", "#FAEBD7"], designer: ["#228B22", "#006400", "#004D00"] }, roomsets: ["https://images.unsplash.com/photo-1616486341352-7edec6090c24?auto=format&fit=crop&q=80&w=2070"] },
 
             // YELLOWS
-            { name: "Sunray", hex: "#FFD700", family: "yellow", description: "A bright, cheerful yellow that brings the joy of sunshine indoors." },
-            { name: "Lemon Sorbet", hex: "#FFFACD", family: "yellow", description: "A light, refreshing yellow that cleanses the visual palette and adds brightness." },
-            { name: "Ochre Earth", hex: "#CC7722", family: "yellow", description: "A traditional, pigment-rich yellow that feels grounded and historic." },
-            { name: "Buttercup", hex: "#F3E5AB", family: "yellow", description: "A soft, creamy yellow that is gentle on the eyes and perfect for bedrooms." },
-            { name: "Morning Glow", hex: "#FFEC8B", family: "yellow", description: "A pale, luminous yellow that mimics the first light of a beautiful day." },
+            { name: "Sunray", hex: "#FFD700", code: "YL01", family: "yellow", description: "A bright, cheerful yellow bringing joy indoors.", palettes: { tonal: ["#FFC107", "#FFA000", "#FF8F00"], harmonising: ["#FFEB3B", "#FFEE58", "#FFF176"], designer: ["#000000", "#FFFFFF", "#757575"] }, roomsets: ["https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Morning Glow", hex: "#FFEC8B", code: "YL02", family: "yellow", description: "A pale yellow mimicking beautiful morning light.", palettes: { tonal: ["#FFF1A8", "#FFF6C5", "#FFFAE2"], harmonising: ["#E8F5E9", "#F1F8E9", "#FFF9C4"], designer: ["#4E342E", "#3E2723", "#2D1C1B"] }, roomsets: ["https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Mustard Seed", hex: "#E1AD01", code: "YL03", family: "yellow", description: "A deep, spicy yellow that adds vintage charm.", palettes: { tonal: ["#C99B01", "#B18901", "#997701"], harmonising: ["#8B4513", "#5C4033", "#3E2723"], designer: ["#2C3E50", "#34495E", "#E67E22"] }, roomsets: ["https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Lemon Sorbet", hex: "#FFFACD", code: "YL04", family: "yellow", description: "Refreshing and light, perfect for kitchens and baths.", palettes: { tonal: ["#FFFACD", "#FAFAD2", "#FFFFE0"], harmonising: ["#F0FFF0", "#F5FFFA", "#F0FFFF"], designer: ["#FF4500", "#FF6347", "#FF7F50"] }, roomsets: ["https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=2070"] },
 
             // GREENS
-            { name: "Forest Canopy", hex: "#228B22", family: "green", description: "A deep, lush green that connects your interior directly with the beauty of nature." },
-            { name: "Sage Garden", hex: "#BCB88A", family: "green", description: "A muted, sophisticated green that brings a calm and peaceful vibe." },
-            { name: "Emerald Isle", hex: "#50C878", family: "green", description: "A precious, jewel-toned green that adds a touch of royal luxury." },
-            { name: "Mint Crisp", hex: "#98FF98", family: "green", description: "A fresh, revitalizing green that is perfect for bathrooms and laundry rooms." },
-            { name: "Olive Branch", hex: "#808000", family: "green", description: "A classic, earthy green that pairs beautifully with natural wood and stone." },
+            { name: "Forest Canopy", hex: "#228B22", code: "GR01", family: "green", description: "A deep, lush green connecting to nature.", palettes: { tonal: ["#1B6E1B", "#145214", "#0D360D"], harmonising: ["#32CD32", "#556B2F", "#8FBC8F"], designer: ["#FFFFFF", "#D2B48C", "#4E342E"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Sage Garden", hex: "#BCB88A", code: "GR02", family: "green", description: "A muted green bringing a calm, peaceful vibe.", palettes: { tonal: ["#A8A47A", "#94906A", "#807C5A"], harmonising: ["#F5F5F5", "#D3D3D3", "#808080"], designer: ["#2F4F4F", "#1A1A1B", "#FFFFFF"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Olive Grove", hex: "#808000", code: "GR03", family: "green", description: "A classic Mediterranean olive that anchors large rooms.", palettes: { tonal: ["#6B6B00", "#575700", "#424200"], harmonising: ["#D2B48C", "#8B4513", "#CD853F"], designer: ["#212121", "#424242", "#F5F5F5"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Minty Fresh", hex: "#98FB98", code: "GR04", family: "green", description: "Cool and revitalizing, ideal for modern work spaces.", palettes: { tonal: ["#90EE90", "#32CD32", "#00FF7F"], harmonising: ["#E0FFE0", "#F0FFF0", "#AFEEEE"], designer: ["#FF69B4", "#DA70D6", "#9932CC"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Emerald Isle", hex: "#50C878", code: "GR05", family: "green", description: "A bright, gemstone green that commands attention.", palettes: { tonal: ["#45AD68", "#3A9258", "#2F7748"], harmonising: ["#00A572", "#009063", "#007B54"], designer: ["#FFD700", "#C0C0C0", "#E5E4E2"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
 
-            // BLUES
-            { name: "Royal Sapphire", hex: "#002366", family: "blue", description: "A deep, commanding blue that brings authority and timeless beauty." },
-            { name: "Ocean Breeze", hex: "#0077BE", family: "blue", description: "A vibrant, mid-toned blue that evokes the spirit of the open sea." },
-            { name: "Sky Clarity", hex: "#87CEEB", family: "blue", description: "A light, peaceful blue that makes ceilings feel higher and rooms larger." },
-            { name: "Midnight Depth", hex: "#191970", family: "blue", description: "A mysterious, near-black blue perfect for dramatic accents and media rooms." },
-            { name: "Arctic Ice", hex: "#C6E2FF", family: "blue", description: "A pale, cool blue that feels refreshing and modern." },
+            // BLUES & TEALS
+            { name: "Royal Sapphire", hex: "#002366", code: "BL01", family: "blue", description: "A deep, commanding blue bringing authority.", palettes: { tonal: ["#001B4D", "#001333", "#000B1A"], harmonising: ["#003399", "#0040BF", "#004CE6"], designer: ["#FFD700", "#FFFFFF", "#D3D3D3"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Ocean Breeze", hex: "#0077BE", code: "BL02", family: "blue", description: "A vibrant blue evoking the spirit of the open sea.", palettes: { tonal: ["#0064A1", "#005182", "#003F66"], harmonising: ["#E1F5FE", "#81D4FA", "#29B6F6"], designer: ["#FF8C00", "#FF4500", "#FFFFFF"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Midnight Sky", hex: "#191970", code: "BL03", family: "blue", description: "A mysterious, near-black blue for dramatic dining rooms.", palettes: { tonal: ["#14145C", "#0F0F47", "#0A0A33"], harmonising: ["#483D8B", "#4B0082", "#6A5ACD"], designer: ["#C0C0C0", "#E5E4E2", "#FFFAFA"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Turquoise Gem", hex: "#40E0D0", code: "BL04", family: "blue", description: "A playful, vibrant teal that adds tropical flair.", palettes: { tonal: ["#3BCFC0", "#36BDB0", "#31AA9F"], harmonising: ["#AFEEEE", "#7FFFD4", "#00CED1"], designer: ["#FFD700", "#FF8C00", "#FF4500"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Powder Blue", hex: "#B0E0E6", code: "BL05", family: "blue", description: "A soft, airy blue that creates a sense of space.", palettes: { tonal: ["#9ECBD1", "#8CB6BC", "#7AA1A7"], harmonising: ["#E1F5FE", "#F0F8FF", "#F0FFFF"], designer: ["#8B4513", "#5C4033", "#212121"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Teal Deep", hex: "#008080", code: "BL06", family: "blue", description: "A sophisticated dark teal that feels lush and expensive.", palettes: { tonal: ["#006666", "#004D4D", "#003333"], harmonising: ["#20B2AA", "#48D1CC", "#40E0D0"], designer: ["#F5F5DC", "#D2B48C", "#8B4513"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
 
             // VIOLETS
-            { name: "Lavender Dream", hex: "#E6E6FA", family: "violet", description: "A soft, floral violet that promotes relaxation and restful sleep." },
-            { name: "Royal Purple", hex: "#7851A9", family: "violet", description: "A majestic, deep purple that makes any room feel like a palace." },
-            { name: "Amethyst Sky", hex: "#9966CC", family: "violet", description: "A spiritual, balanced violet that inspires creativity and thought." },
-            { name: "Plum Luxe", hex: "#8E4585", family: "violet", description: "A rich, sophisticated purple with warm undertones, perfect for dining rooms." },
-            { name: "Violet Mist", hex: "#DCD0FF", family: "violet", description: "A delicate, ethereal purple that adds a subtle hint of color." },
+            { name: "Lavender Dream", hex: "#E6E6FA", code: "VL01", family: "violet", description: "A soft violet promoting relaxation and sleep.", palettes: { tonal: ["#D8D8F0", "#C9C9E6", "#BABADC"], harmonising: ["#F3E5F5", "#E1BEE7", "#CE93D8"], designer: ["#2E7D32", "#1B5E20", "#000000"] }, roomsets: ["https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Royal Purple", hex: "#7851A9", code: "VL02", family: "violet", description: "A majestic purple making rooms feel like a palace.", palettes: { tonal: ["#684693", "#583B7D", "#483167"], harmonising: ["#9370DB", "#BA55D3", "#DDA0DD"], designer: ["#FFD700", "#FFFFFF", "#212121"] }, roomsets: ["https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Plum Jam", hex: "#8E4585", code: "VL03", family: "violet", description: "A deep, fruity purple that is both warm and bold.", palettes: { tonal: ["#7A3A72", "#66305F", "#52264C"], harmonising: ["#DB7093", "#C71585", "#D87093"], designer: ["#F5F5F5", "#808080", "#2F4F4F"] }, roomsets: ["https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Orchid Bloom", hex: "#DA70D6", code: "VL04", family: "violet", description: "A vibrant, tropical purple that pops on accent walls.", palettes: { tonal: ["#C766C2", "#B45CAF", "#A1529C"], harmonising: ["#EE82EE", "#FF00FF", "#BA55D3"], designer: ["#FFFFFF", "#F0F0F0", "#1A1A1B"] }, roomsets: ["https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=2070"] },
 
-            // NEUTRALS
-            { name: "Warm Taupe", hex: "#B38B6D", family: "neutral", description: "The ultimate versatile neutral, bridging the gap between grey and brown." },
-            { name: "Stone Grey", hex: "#928E85", family: "neutral", description: "A modern, urban grey inspired by smooth river stones and city architecture." },
-            { name: "Sahara Sand", hex: "#F4A460", family: "neutral", description: "A warm, textured neutral that brings a sense of desert adventure." },
-            { name: "Pebble Path", hex: "#D3D3D3", family: "neutral", description: "A light, clean grey that goes with everything and never goes out of style." },
-            { name: "Coffee Cream", hex: "#D2B48C", family: "neutral", description: "A rich, creamy neutral that is as comforting as your favorite morning brew." }
+            // NEUTRALS & GREYS
+            { name: "Warm Taupe", hex: "#B38B6D", code: "NT01", family: "neutral", description: "A versatile neutral bridging grey and brown.", palettes: { tonal: ["#A17D62", "#8F6F57", "#7D614C"], harmonising: ["#D2B48C", "#F5F5DC", "#FAF0E6"], designer: ["#FFFFFF", "#3E2723", "#1A1A1B"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Stone Grey", hex: "#928E85", code: "NT02", family: "neutral", description: "A modern grey inspired by smooth river stones.", palettes: { tonal: ["#838077", "#747169", "#65625B"], harmonising: ["#BDBDBD", "#D3D3D3", "#EEEEEE"], designer: ["#DC143C", "#002366", "#212121"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Charcoal Ash", hex: "#36454F", code: "NT03", family: "neutral", description: "A deep, moody grey for sophisticated, modern interiors.", palettes: { tonal: ["#2F3C45", "#28333B", "#212A31"], harmonising: ["#708090", "#778899", "#808080"], designer: ["#FFD700", "#FFFFFF", "#C0C0C0"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Sandstone", hex: "#D2B48C", code: "NT04", family: "neutral", description: "Warm and inviting, like a sunny day at the beach.", palettes: { tonal: ["#BC9A7A", "#A68068", "#906656"], harmonising: ["#F5F5DC", "#FAF0E6", "#FFF8DC"], designer: ["#000080", "#00008B", "#0000CD"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Urban Slate", hex: "#708090", code: "NT05", family: "neutral", description: "A cool, blue-grey that feels industrial yet clean.", palettes: { tonal: ["#657382", "#5A6674", "#4F5966"], harmonising: ["#778899", "#B0C4DE", "#B0E0E6"], designer: ["#8B0000", "#A52A2A", "#FFFFFF"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+
+            // TEALS & AQUAS
+            { name: "Teal Voyage", hex: "#008080", code: "TQ01", family: "blue", description: "A deep, adventurous teal for sophisticated spaces.", palettes: { tonal: ["#006666", "#004D4D", "#003333"], harmonising: ["#20B2AA", "#48D1CC", "#40E0D0"], designer: ["#E67E22", "#D35400", "#FFFFFF"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Aqua Marine", hex: "#7FFFD4", code: "TQ02", family: "blue", description: "Refreshing and light, inspired by tropical waters.", palettes: { tonal: ["#66FFCC", "#4DFFB3", "#33FF99"], harmonising: ["#B0E0E6", "#AFEEEE", "#E0FFFF"], designer: ["#FF4500", "#FF6347", "#FF7F50"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Deep Sea", hex: "#006994", code: "TQ03", family: "blue", description: "A mysterious and calming deep ocean blue-green.", palettes: { tonal: ["#005B82", "#004D70", "#003F5E"], harmonising: ["#008B8B", "#20B2AA", "#5F9EA0"], designer: ["#FFFAF0", "#FDF5E6", "#FAEBD7"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Peacock Plume", hex: "#33A1C9", code: "TQ04", family: "blue", description: "A royal and vibrant teal-blue with high brilliance.", palettes: { tonal: ["#2B8BAF", "#237595", "#1B5F7B"], harmonising: ["#40E0D0", "#00CED1", "#20B2AA"], designer: ["#FFD700", "#DAA520", "#B8860B"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+
+            // LIMES & YELLOW-GREENS
+            { name: "Lime Flash", hex: "#32CD32", code: "LM01", family: "green", description: "An energetic lime green that sparks creativity.", palettes: { tonal: ["#2EBA2E", "#2AA72A", "#269426"], harmonising: ["#ADFF2F", "#7FFF00", "#7CFC00"], designer: ["#000000", "#FFFFFF", "#333333"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Electric Lime", hex: "#CCFF00", code: "LM02", family: "green", description: "A high-visibility, ultra-modern citrus green.", palettes: { tonal: ["#BBEA00", "#AAD500", "#99BF00"], harmonising: ["#FFFF00", "#DAA520", "#FFD700"], designer: ["#1A1A1B", "#2D3436", "#636E72"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Fern Mist", hex: "#4F7942", code: "LM03", family: "green", description: "A soft, natural green inspired by woodland ferns.", palettes: { tonal: ["#466B3B", "#3D5D34", "#344F2D"], harmonising: ["#228B22", "#008000", "#006400"], designer: ["#F5F5DC", "#D2B48C", "#8B4513"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] },
+
+            // MORE NEUTRALS (GREIGES & BEIGES)
+            { name: "Warm Greige", hex: "#D7D0C0", code: "NT06", family: "neutral", description: "The perfect balance of grey and beige for any room.", palettes: { tonal: ["#C2B9A7", "#ADA38F", "#988D77"], harmonising: ["#F5F5DC", "#E6D5B8", "#D2B48C"], designer: ["#2C3E50", "#E74C3C", "#ECF0F1"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Silver Strand", hex: "#E5E4E2", code: "NT07", family: "neutral", description: "A bright, sophisticated silver that feels clean and modern.", palettes: { tonal: ["#CECDC9", "#B7B6B0", "#A09F97"], harmonising: ["#F5F5F5", "#FFFFFF", "#F8F8FF"], designer: ["#DC143C", "#000080", "#2F4F4F"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Mushroom", hex: "#BDB76B", code: "NT08", family: "neutral", description: "An earthy, deep beige that adds natural warmth.", palettes: { tonal: ["#AAA460", "#979155", "#847E4A"], harmonising: ["#DAA520", "#B8860B", "#8B4513"], designer: ["#4B0082", "#2F4F4F", "#000000"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Pebble Path", hex: "#D3D3D3", code: "NT09", family: "neutral", description: "A simple, timeless light grey for any space.", palettes: { tonal: ["#BDBDBD", "#A9A9A9", "#808080"], harmonising: ["#FFFFFF", "#F5F5F5", "#DCDCDC"], designer: ["#D9232D", "#002366", "#212121"] }, roomsets: ["https://images.unsplash.com/photo-1616137422495-1e902b72174c?auto=format&fit=crop&q=80&w=2070"] },
+
+            // FINAL TRENDING BATCH
+            { name: "Midnight Navy", hex: "#000080", code: "BL07", family: "blue", trending: true, description: "Deep, formal, and timeless navy blue.", palettes: { tonal: ["#000066", "#00004D", "#000033"], harmonising: ["#0000CD", "#0000FF", "#4169E1"], designer: ["#FFD700", "#FFFFFF", "#FF8C00"] }, roomsets: ["https://images.unsplash.com/photo-1615873968403-89e068629275?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Terracotta Earth", hex: "#E2725B", code: "OR05", family: "orange", trending: true, description: "A warm, clay-inspired orange that feels grounded.", palettes: { tonal: ["#C55D49", "#A84837", "#8B3325"], harmonising: ["#D2691E", "#A0522D", "#8B4513"], designer: ["#2F4F4F", "#FFFFFF", "#F5F5DC"] }, roomsets: ["https://images.unsplash.com/photo-1616486341352-7edec6090c24?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Amethyst", hex: "#9966CC", code: "VL05", family: "violet", trending: true, description: "A bright, gemstone purple that adds a touch of magic.", palettes: { tonal: ["#8256AF", "#6B4692", "#543675"], harmonising: ["#BA55D3", "#DA70D6", "#DDA0DD"], designer: ["#FFD700", "#FFFFFF", "#212121"] }, roomsets: ["https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Ruby Garnet", hex: "#9B111E", code: "RD07", family: "red", trending: true, description: "A deep, Jewel-toned red for luxury accent walls.", palettes: { tonal: ["#820E19", "#690B14", "#50080F"], harmonising: ["#7E191B", "#5C1214", "#3D0C0E"], designer: ["#FFD700", "#C0C0C0", "#FFFFFF"] }, roomsets: ["https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=2070"] },
+            { name: "Emerald Glade", hex: "#008F39", code: "GR06", family: "green", trending: true, description: "A rich, vibrant forest green that feels alive.", palettes: { tonal: ["#007A31", "#006529", "#005021"], harmonising: ["#228B22", "#008000", "#006400"], designer: ["#FFFFFF", "#D2B48C", "#4E342E"] }, roomsets: ["https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&q=80&w=2070"] }
         ];
 
         let favorites = JSON.parse(localStorage.getItem('premiumColorsFavorites') || '[]');
@@ -676,10 +739,15 @@
             let filtered = colorData.filter(color => {
                 const matchesFamily = currentFilter === 'all' || color.family === currentFilter;
                 const matchesSearch = color.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    color.hex.toLowerCase().includes(searchQuery.toLowerCase());
+                    color.hex.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    (color.code && color.code.toLowerCase().includes(searchQuery.toLowerCase()));
 
                 if (currentFilter === 'favorites') {
                     return favorites.includes(color.hex) && matchesSearch;
+                }
+
+                if (currentFilter === 'trending') {
+                    return color.trending && matchesSearch;
                 }
 
                 return matchesFamily && matchesSearch;
@@ -698,15 +766,20 @@
 
             colorPickerGrid.innerHTML = filtered.map(color => {
                 const isFav = favorites.includes(color.hex);
+                // Escape description for JS string
+                const descEscaped = color.description.replace(/'/g, "\\'");
                 return `
-                    <div class="color-option reveal active" onclick="selectColor('${color.hex}', '${color.name}', '${color.family}', '${color.description.replace(/'/g, "\\'")}')">
+                    <div class="color-option reveal active" onclick="selectColor('${color.hex}', '${color.name}', '${color.family}', '${descEscaped}')">
                         <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(event, '${color.hex}')">
                             <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
                         </button>
                         <div class="color-swatch-fill" style="background-color: ${color.hex};"></div>
                         <div class="color-info">
                             <div class="color-name">${color.name}</div>
-                            <div class="color-hex">${color.hex}</div>
+                            <div class="color-meta">
+                                <span class="color-code">${color.code}</span>
+                                <span class="color-hex">${color.hex}</span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -714,12 +787,21 @@
         }
 
         function selectColor(hex, name, family, description) {
+            const color = colorData.find(c => c.hex === hex);
+
             // Update UI
-            selectedColorBox.style.backgroundColor = hex;
+            document.getElementById('roomVisualizerImg').src = color.roomsets[0];
+            document.getElementById('selectedColorOverlay').style.backgroundColor = hex;
+            document.getElementById('selectedColorSwatch').style.backgroundColor = hex;
+            document.getElementById('selectedColorLabel').textContent = name;
+            document.getElementById('selectedColorHexLabel').textContent = hex;
+
             selectedColorName.textContent = name;
-            selectedColorCode.textContent = `HEX: ${hex}`;
             selectedColorFamily.textContent = `${family.toUpperCase()} FAMILY`;
-            selectedColorDesc.textContent = description;
+            document.getElementById('selectedColorDesc').textContent = description;
+
+            // Render Palette
+            renderPalettes(color);
 
             // Update Favorite Button in Detail View
             const isFav = favorites.includes(hex);
@@ -769,6 +851,61 @@
             colorSearch.addEventListener('input', (e) => {
                 searchQuery = e.target.value;
                 renderColors();
+            });
+
+            // Palette Tabs
+            document.querySelectorAll('.palette-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.palette-tab').forEach(t => {
+                        t.classList.remove('active');
+                        t.style.color = 'var(--text-muted)';
+                        t.style.borderColor = 'transparent';
+                    });
+                    tab.classList.add('active');
+                    tab.style.color = 'var(--primary)';
+                    tab.style.borderColor = 'var(--primary)';
+
+                    const activeColorHex = document.getElementById('selectedColorHexLabel').textContent;
+                    const activeColor = colorData.find(c => c.hex === activeColorHex);
+                    if (activeColor) renderPalettes(activeColor, tab.dataset.tab);
+                });
+            });
+        }
+
+        function renderPalettes(color, type = 'tonal') {
+            const container = document.getElementById('paletteSwatches');
+            const palette = color.palettes[type] || [];
+
+            if (palette.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No coordinating colors available for this palette type.</p>';
+                return;
+            }
+
+            container.innerHTML = palette.map(p => {
+                const coordColor = colorData.find(c => c.hex === p) || { name: 'Coordinating Shade', hex: p, family: color.family, description: `A ${type} shade selected to perfectly complement ${color.name}.` };
+                const descEscaped = (coordColor.description || "").replace(/'/g, "\\'");
+
+                return `
+                    <div style="text-align: center; animation: fadeIn 0.5s ease forwards;">
+                        <div style="width: 65px; height: 65px; background: ${p}; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.3s ease;" 
+                             onmouseover="this.style.transform='scale(1.1)'"
+                             onmouseout="this.style.transform='scale(1)'"
+                             onclick="selectColor('${p}', '${coordColor.name}', '${coordColor.family}', '${descEscaped}')" 
+                             title="${coordColor.name}: ${p}"></div>
+                        <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 0.5rem; text-transform: uppercase;">${p}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Highlight active tab
+            document.querySelectorAll('.palette-tab').forEach(t => {
+                if (t.dataset.tab === type) {
+                    t.classList.add('active');
+                    t.style.color = 'var(--primary)';
+                    t.style.borderColor = 'var(--primary)';
+                } else {
+                    t.classList.remove('active');
+                }
             });
         }
 
